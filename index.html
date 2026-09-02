@@ -1,88 +1,103 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Thursday Tile Society</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Thursday Tile Society</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header class="navbar">
+      <div class="logo">
+        <span aria-hidden="true">🀄</span> Thursday Tile Society
+      </div>
+      <nav aria-label="Primary">
+        <a href="#updates">Updates</a>
+        <a href="#schedule">Schedule</a>
+        <a href="#rules">League Rules</a>
+      </nav>
+    </header>
 
-  <header class="navbar">
-    <div class="logo"><span aria-hidden="true">🀄</span> Thursday Tile Society</div>
-    <nav aria-label="Primary">
-      <a href="#updates">Updates</a>
-      <a href="#schedule">Schedule</a>
-      <a href="#rules">League Rules</a>
-    </nav>
-  </header>
-
-  <section class="hero">
-    <h1>Thursday Tile Society</h1>
-    <p>Weekly hands, friendly competition, and casual American Mahjong.</p>
-  </section>
-
-  <main class="container">
-
-    <section id="updates" class="card">
-      <h2>Latest Updates</h2>
-      <article class="post">
-        <span class="date">September 2, 2026</span>
-        <h3>Card Clarifications & Charleston Etiquette</h3>
-        <p>A quick reminder for next week: please make sure everyone is using the current NMJL card. We’ll do a brief refresher on blind passes before starting Table 1.</p>
-      </article>
-
-      <article class="post">
-        <span class="date">August 25, 2026</span>
-        <h3>Welcome to the Fall Rotation!</h3>
-        <p>We're officially kicking off our Thursday night sessions. Check the schedule below for times and locations.</p>
-      </article>
+    <section class="hero">
+      <h1>Thursday Tile Society</h1>
+      <p>Weekly hands, friendly competition, and casual American Mahjong.</p>
     </section>
 
-    <section id="schedule" class="card">
-      <h2>Upcoming Games</h2>
-	  <div style="overflow-x: auto;">
-        <table class="schedule-table" aria-label="Upcoming games">
-          <thead>
-            <tr>
-              <th scope="col">Date</th>
-              <th scope="col">Time</th>
-              <th scope="col">Host / Location</th>
-              <th scope="col">Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Thursday, Sep 10</td>
-              <td>7:00 PM</td>
-              <td>Bryan's Place</td>
-              <td><span class="badge active">Confirmed</span></td>
-            </tr>
-            <tr>
-              <td>Thursday, Sep 17</td>
-              <td>7:00 PM</td>
-              <td>TBD</td>
-              <td><span class="badge pending">Open Slot</span></td>
-            </tr>
-          </tbody>
-        </table>
-	  </div>
-    </section>
+    <main class="container">
+      <section id="updates" class="card">
+        <h2>Latest Updates</h2>
+        <article class="post">
+          <span class="date">September 2, 2026</span>
+          <h3>Card Clarifications & Charleston Etiquette</h3>
+          <p>
+            A quick reminder for next week: please make sure everyone is using
+            the current NMJL card. We’ll do a brief refresher on blind passes
+            before starting Table 1.
+          </p>
+        </article>
 
-    <section id="rules" class="card">
-      <h2>League Guidelines</h2>
-      <ul>
-        <li><strong>Standard Rules:</strong> Official NMJL rules apply for all hand validation and Joker usage.</li>
-        <li><strong>Table Sizes:</strong> 4-player tables preferred; 3-player variants with a dummy hand used if necessary.</li>
-        <li><strong>Pushers & Racks:</strong> Please bring your own pusher racks if you have a preferred set!</li>
-      </ul>
-    </section>
+        <article class="post">
+          <span class="date">August 25, 2026</span>
+          <h3>Welcome to the Fall Rotation!</h3>
+          <p>
+            We're officially kicking off our Thursday night sessions. Check the
+            schedule below for times and locations.
+          </p>
+        </article>
+      </section>
 
-  </main>
+      <!-- Schedule Section -->
+      <section id="schedule" class="card">
+        <h2>Upcoming Games</h2>
+        <div class="table-container">
+          <table class="schedule-table">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Host / Location</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Thursday, Sep 10</td>
+                <td>7:00 PM</td>
+                <td>Bryan's Place</td>
+                <td><span class="badge active">Confirmed</span></td>
+              </tr>
+              <tr>
+                <td>Thursday, Sep 17</td>
+                <td>7:00 PM</td>
+                <td>TBD</td>
+                <td><span class="badge pending">Open Slot</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
 
-  <footer>
-    <p>© 2026 Thursday Tile Society • Built for casual play</p>
-  </footer>
+      <section id="rules" class="card">
+        <h2>League Guidelines</h2>
+        <ul>
+          <li>
+            <strong>Standard Rules:</strong> Official NMJL rules apply for all
+            hand validation and Joker usage.
+          </li>
+          <li>
+            <strong>Table Sizes:</strong> 4-player tables preferred; 3-player
+            variants with a dummy hand used if necessary.
+          </li>
+          <li>
+            <strong>Pushers & Racks:</strong> Please bring your own pusher racks
+            if you have a preferred set!
+          </li>
+        </ul>
+      </section>
+    </main>
 
-</body>
+    <footer>
+      <p>© 2026 Thursday Tile Society • Built for casual play</p>
+    </footer>
+  </body>
 </html>

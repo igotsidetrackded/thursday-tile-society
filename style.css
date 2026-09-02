@@ -2,7 +2,8 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
 body {
@@ -18,6 +19,7 @@ body {
   background-color: #1a365d;
   color: white;
   padding: 1rem 2rem;
+  border-bottom: 3px solid #d69e2e; /* Warm gold accent */
 }
 
 .navbar .logo {
@@ -30,32 +32,29 @@ body {
   text-decoration: none;
   margin-left: 1.5rem;
   font-weight: 500;
+  transition: color 0.2s ease;
 }
 
 .navbar nav a:hover {
-  color: #ffffff;
+  color: #d69e2e;
 }
-
-.navbar nav a:focus-visible {
-  outline: 2px solid #ffffff;
-  outline-offset: 2px;
-}
-
-.navbar {
-  border-bottom: 3px solid #d69e2e; /* A warm gold accent for mahjong tiles */
-}
-
 
 .hero {
   background: linear-gradient(135deg, #2b6cb0, #1a365d);
   color: white;
   text-align: center;
-  padding: 3rem 1rem;
+  padding: 3.5rem 1rem;
 }
 
 .hero h1 {
   font-size: 2.2rem;
   margin-bottom: 0.5rem;
+  letter-spacing: -0.5px;
+}
+
+.hero p {
+  color: #e2e8f0;
+  font-size: 1.1rem;
 }
 
 .container {
@@ -69,7 +68,15 @@ body {
   border-radius: 8px;
   padding: 1.5rem;
   margin-bottom: 1.5rem;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
 }
 
 .card h2 {
@@ -78,15 +85,6 @@ body {
   border-bottom: 2px solid #edf2f7;
   padding-bottom: 0.5rem;
 }
-
-.card {
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-.card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-}
-
 
 .post {
   margin-bottom: 1.2rem;
@@ -99,29 +97,49 @@ body {
 .post .date {
   font-size: 0.85rem;
   color: #718096;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .post h3 {
-  font-size: 1.1rem;
+  font-size: 1.15rem;
   margin: 0.2rem 0;
+  color: #1a202c;
+}
+
+/* Responsive Table Wrapper */
+.table-container {
+  overflow-x: auto;
 }
 
 .schedule-table {
   width: 100%;
   border-collapse: collapse;
+  min-width: 500px; /* Prevents awkward squishing on small mobile screens */
 }
 
-.schedule-table th, .schedule-table td {
+.schedule-table th {
+  background-color: #f7fafc;
+  color: #4a5568;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.schedule-table th,
+.schedule-table td {
   text-align: left;
-  padding: 0.75rem;
+  padding: 0.75rem 1rem;
   border-bottom: 1px solid #edf2f7;
 }
 
 .badge {
-  padding: 0.25rem 0.5rem;
-  border-radius: 4px;
-  font-size: 0.8rem;
+  padding: 0.25rem 0.6rem;
+  border-radius: 12px;
+  font-size: 0.75rem;
   font-weight: bold;
+  display: inline-block;
 }
 
 .badge.active {
@@ -139,12 +157,12 @@ ul {
 }
 
 li {
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.6rem;
 }
 
 footer {
   text-align: center;
-  padding: 2rem;
+  padding: 2.5rem 1rem;
   color: #718096;
   font-size: 0.9rem;
 }
