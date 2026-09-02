@@ -41,6 +41,11 @@ body {
   outline-offset: 2px;
 }
 
+.navbar {
+  border-bottom: 3px solid #d69e2e; /* A warm gold accent for mahjong tiles */
+}
+
+
 .hero {
   background: linear-gradient(135deg, #2b6cb0, #1a365d);
   color: white;
@@ -73,6 +78,15 @@ body {
   border-bottom: 2px solid #edf2f7;
   padding-bottom: 0.5rem;
 }
+
+.card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
 
 .post {
   margin-bottom: 1.2rem;
