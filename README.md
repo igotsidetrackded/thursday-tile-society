@@ -23,7 +23,6 @@ The official website for the **Thursday Tile Society**—a casual, recreational 
 
 ## 📂 Repository Structure
 
-```text
-├── index.html   # Main layout and content (Updates, Schedule, Guidelines)
-├── style.css    # Global styling, responsive layout, and custom typography
-└── CNAME        # GitHub Pages custom domain configuration
+    ├── index.html   # Main layout and content (Updates, Schedule, Guidelines)
+    ├── style.css    # Global styling, responsive layout, and custom typography
+    └── CNAME        # GitHub Pages custom domain configuration
