@@ -16,7 +16,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #1a365d;
+  background-color: #503090;
   color: white;
   padding: 1rem 2rem;
   border-bottom: 3px solid #d69e2e; /* Warm gold accent */
@@ -40,7 +40,7 @@ body {
 }
 
 .hero {
-  background: linear-gradient(135deg, #2b6cb0, #1a365d);
+  background: linear-gradient(135deg, #706090, #503090);
   color: white;
   text-align: center;
   padding: 3.5rem 1rem;
