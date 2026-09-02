@@ -2,7 +2,7 @@
 
 The official website for the **Thursday Tile Society**—a casual, recreational American Mahjong league. This repository contains the code and content powering our community site, hosted via GitHub Pages.
 
-📍 **Live Site:** [https://www.thursdaytilesociety.com](https://www.thursdaytilesociety.com) *(or your domain URL)*
+📍 **Live Site:** [https://igotsidetrackded.github.io/thursday-tile-society](https://igotsidetrackded.github.io/thursday-tile-society)
 
 ---
 
@@ -26,3 +26,10 @@ The official website for the **Thursday Tile Society**—a casual, recreational 
     ├── index.html   # Main layout and content (Updates, Schedule, Guidelines)
     ├── style.css    # Global styling, responsive layout, and custom typography
     └── CNAME        # GitHub Pages custom domain configuration
+
+---
+
+## 📋 TODOs
+
+- **Purchase domain:** after purchasing domain update GitHub Pages settings with custom domain
+
