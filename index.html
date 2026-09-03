@@ -178,7 +178,13 @@
     </main>
 
     <footer>
-      <p>© 2026 Thursday Tile Society • Built for casual play</p>
+      <p>
+        &copy; <span id="year"></span>Thursday Tile Society • Built for casual
+        play
+      </p>
+      <script>
+        document.getElementById("year").textContent = new Date().getFullYear();
+      </script>
     </footer>
   </body>
 </html>
