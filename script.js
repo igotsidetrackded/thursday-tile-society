@@ -32,17 +32,27 @@ document.addEventListener("DOMContentLoaded", async () => {
         item.className = "game-item";
 
         // Determine badge styling based on status string
+        const statusUpper = String(game.status || "").toUpperCase();
+
         let badgeClass = "badge-pending";
-        if (game.status.includes("CONFIRMED")) {
+        if (statusUpper.includes("CONFIRMED")) {
           badgeClass = "badge-confirmed";
-        } else if (game.status.includes("NEEDS HOST")) {
+        } else if (statusUpper.includes("NEEDS HOST")) {
           badgeClass = "badge-host";
         }
 
-        item.innerHTML = `
-          <span class="game-date"><strong>${game.date}</strong></span>
-          <span class="status-badge ${badgeClass}">${game.status}</span>
-        `;
+        const dateSpan = document.createElement("span");
+        dateSpan.className = "game-date";
+
+        const dateStrong = document.createElement("strong");
+        dateStrong.textContent = String(game.date || "");
+        dateSpan.appendChild(dateStrong);
+
+        const statusSpan = document.createElement("span");
+        statusSpan.className = `status-badge ${badgeClass}`;
+        statusSpan.textContent = String(game.status || "");
+
+        item.replaceChildren(dateSpan, statusSpan);
         statusList.appendChild(item);
       });
 

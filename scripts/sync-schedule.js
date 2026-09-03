@@ -11,14 +11,30 @@ const TAB_NAMES = [
 
 async function syncSchedule() {
   try {
+    const spreadsheetId = process.env.SPREADSHEET_ID;
+    if (!spreadsheetId) {
+      throw new Error("Missing required env var: SPREADSHEET_ID");
+    }
+
+    const rawKey = process.env.GCP_SERVICE_ACCOUNT_KEY;
+    if (!rawKey) {
+      throw new Error("Missing required env var: GCP_SERVICE_ACCOUNT_KEY");
+    }
+
+    let credentials;
+    try {
+      credentials = JSON.parse(rawKey);
+    } catch {
+      throw new Error("GCP_SERVICE_ACCOUNT_KEY must be valid JSON");
+    }
+
     // Authenticate using the Service Account JSON key stored in GitHub Secrets
     const auth = new google.auth.GoogleAuth({
-      credentials: JSON.parse(process.env.GCP_SERVICE_ACCOUNT_KEY),
+      credentials,
       scopes: ["https://www.googleapis.com/auth/spreadsheets.readonly"],
     });
 
     const sheets = google.sheets({ version: "v4", auth });
-    const spreadsheetId = process.env.SPREADSHEET_ID;
 
     // Build the sheet ranges using the single-quote escape rule (e.g., "'September ''26'!A1:Z100")
     const ranges = TAB_NAMES.map(
