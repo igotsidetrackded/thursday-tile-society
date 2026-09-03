@@ -12,6 +12,32 @@ body {
   line-height: 1.6;
 }
 
+/* Sets the default body text font */
+body {
+  font-family:
+    "Plus Jakarta Sans",
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    sans-serif;
+  color: #2d3748;
+  line-height: 1.6;
+}
+
+/* Applies the bold display font to headings and hero titles */
+h1,
+h2,
+h3,
+.logo span {
+  font-family:
+    "Outfit",
+    -apple-system,
+    BlinkMacSystemFont,
+    sans-serif;
+  letter-spacing: -0.02em;
+}
+
 .navbar {
   display: flex;
   justify-content: space-between;
