@@ -92,7 +92,7 @@ textarea,
   background: linear-gradient(135deg, #c8b6e2, #503090);
   color: white;
   text-align: center;
-  padding: 3.5rem 1rem;
+  padding: 2rem 1rem;
 }
 
 .hero h1 {
@@ -104,6 +104,7 @@ textarea,
 .hero p {
   color: #e2e8f0;
   font-size: 1.1rem;
+  margin-bottom: 1rem;
 }
 
 .container {
