@@ -79,15 +79,17 @@ async function syncSchedule() {
           currentDate = colA;
         }
 
-        // 2. Detect "Game Status" Row: Finds 'Game Status' in Column A and reads the calculated value in Column B
-        if (colA === "Game Status") {
-          const statusValue = colB || "Pending";
-          games.push({
-            date: currentDate || `${originalTabName} Game`,
-            status: statusValue,
-          });
-        }
-      }
+        // 2. Detect "Game Status" Row: Finds 'Game Status' in Column A, reads status in Column B, and host name in Column C
+if (colA === 'Game Status') {
+  const statusValue = colB || 'Pending';
+  const hostName = (row[2] || '').trim(); // Column C
+
+  games.push({
+    date: currentDate || `${originalTabName} Game`,
+    status: statusValue,
+    host: hostName,
+  });
+}
 
       if (games.length > 0) {
         scheduleOutput.tabs.push({

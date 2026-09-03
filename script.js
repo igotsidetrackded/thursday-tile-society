@@ -28,31 +28,40 @@ document.addEventListener("DOMContentLoaded", async () => {
 
       // Loop through each Thursday entry in this month
       tab.games.forEach((game) => {
-        const item = document.createElement("li");
-        item.className = "game-item";
+        const item = document.createElement('li');
+        item.className = 'game-item';
 
-        // Determine badge styling based on status string
-        const statusUpper = String(game.status || "").toUpperCase();
+        // Create container for date and host
+        const infoDiv = document.createElement('div');
+        infoDiv.className = 'game-info';
 
-        let badgeClass = "badge-pending";
-        if (statusUpper.includes("CONFIRMED")) {
-          badgeClass = "badge-confirmed";
-        } else if (statusUpper.includes("NEEDS HOST")) {
-          badgeClass = "badge-host";
+        const dateSpan = document.createElement('span');
+        dateSpan.className = 'game-date';
+        dateSpan.innerHTML = `<strong>${game.date}</strong>`;
+        infoDiv.appendChild(dateSpan);
+
+        // Add host name if present
+        if (game.host) {
+          const hostSpan = document.createElement('span');
+          hostSpan.className = 'game-host';
+          hostSpan.textContent = `Host: ${game.host}`;
+          infoDiv.appendChild(hostSpan);
         }
 
-        const dateSpan = document.createElement("span");
-        dateSpan.className = "game-date";
+        // Determine badge styling based on status string
+        let badgeClass = 'badge-pending';
+        if (game.status.includes('CONFIRMED')) {
+          badgeClass = 'badge-confirmed';
+        } else if (game.status.includes('NEEDS HOST')) {
+          badgeClass = 'badge-host';
+        }
 
-        const dateStrong = document.createElement("strong");
-        dateStrong.textContent = String(game.date || "");
-        dateSpan.appendChild(dateStrong);
+        const badgeSpan = document.createElement('span');
+        badgeSpan.className = `status-badge ${badgeClass}`;
+        badgeSpan.textContent = game.status;
 
-        const statusSpan = document.createElement("span");
-        statusSpan.className = `status-badge ${badgeClass}`;
-        statusSpan.textContent = String(game.status || "");
-
-        item.replaceChildren(dateSpan, statusSpan);
+        item.appendChild(infoDiv);
+        item.appendChild(badgeSpan);
         statusList.appendChild(item);
       });
 
