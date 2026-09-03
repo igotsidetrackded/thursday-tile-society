@@ -1,0 +1,81 @@
+{
+  "lastUpdated": "2026-09-03T22:01:23.191Z",
+  "tabs": [
+    {
+      "tabName": "September '26",
+      "games": [
+        {
+          "date": "--- Thursday - Sep 10 2026 ---",
+          "status": "CONFIRMED (Game On! 5 Players)"
+        },
+        {
+          "date": "--- Thursday - Sep 17 2026 ---",
+          "status": "CONFIRMED (Game On! 4 Players)"
+        },
+        {
+          "date": "--- Thursday - Sep 24 2026 ---",
+          "status": "NEEDS HOST (2 Players)"
+        }
+      ]
+    },
+    {
+      "tabName": "October '26",
+      "games": [
+        {
+          "date": "--- Thursday - Oct 01 2026 ---",
+          "status": "NEEDS HOST (0 Players)"
+        },
+        {
+          "date": "--- Thursday - Oct 08 2026 ---",
+          "status": "CONFIRMED (Game On! 3 Players)"
+        },
+        {
+          "date": "--- Thursday - Oct 15 2026 ---",
+          "status": "NEEDS HOST (2 Players)"
+        },
+        {
+          "date": "--- Thursday - Oct 22 2026 ---",
+          "status": "NEEDS HOST (2 Players)"
+        },
+        {
+          "date": "--- Thursday - Oct 29 2026 ---",
+          "status": "NEEDS PLAYERS (2/3)"
+        }
+      ]
+    },
+    {
+      "tabName": "November '26",
+      "games": [
+        {
+          "date": "--- Thursday - Nov 05 2026 ---",
+          "status": "NEEDS HOST (1 Players)"
+        },
+        {
+          "date": "--- Thursday - Nov 12 2026 ---",
+          "status": "NEEDS PLAYERS (1/3)"
+        },
+        {
+          "date": "--- Thursday - Nov 19 2026 ---",
+          "status": "NEEDS HOST (0 Players)"
+        }
+      ]
+    },
+    {
+      "tabName": "December '26",
+      "games": [
+        {
+          "date": "--- Thursday - Dec 03 2026 ---",
+          "status": "NEEDS HOST (1 Players)"
+        },
+        {
+          "date": "--- Thursday - Dec 10 2026 ---",
+          "status": "NEEDS PLAYERS (1/3)"
+        },
+        {
+          "date": "--- Thursday - Dec 17 2026 ---",
+          "status": "NEEDS HOST (1 Players)"
+        }
+      ]
+    }
+  ]
+}
