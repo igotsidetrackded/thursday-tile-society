@@ -7,10 +7,12 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (!response.ok) throw new Error("Schedule data unavailable");
 
     const data = await response.json();
-    container.innerHTML = ""; // Clear loading text
+    container.textContent = ""; // Clear loading text safely
 
     if (!data.tabs || data.tabs.length === 0) {
-      container.innerHTML = "<p>No upcoming schedule dates found.</p>";
+      const emptyMsg = document.createElement("p");
+      emptyMsg.textContent = "No upcoming schedule dates found.";
+      container.appendChild(emptyMsg);
       return;
     }
 
@@ -20,14 +22,14 @@ document.addEventListener("DOMContentLoaded", async () => {
       monthSection.className = "month-block";
 
       const monthTitle = document.createElement("h3");
-      monthTitle.textContent = tab.tabName;
+      monthTitle.textContent = tab.tabName || "";
       monthSection.appendChild(monthTitle);
 
       const statusList = document.createElement("ul");
       statusList.className = "status-list";
 
       // Loop through each Thursday entry in this month
-      tab.games.forEach((game) => {
+      (tab.games || []).forEach((game) => {
         const item = document.createElement("li");
         item.className = "game-item";
 
@@ -35,9 +37,12 @@ document.addEventListener("DOMContentLoaded", async () => {
         const infoDiv = document.createElement("div");
         infoDiv.className = "game-info";
 
+        // XSS-safe date rendering
         const dateSpan = document.createElement("span");
         dateSpan.className = "game-date";
-        dateSpan.innerHTML = `<strong>${game.date}</strong>`;
+        const dateStrong = document.createElement("strong");
+        dateStrong.textContent = game.date || "";
+        dateSpan.appendChild(dateStrong);
         infoDiv.appendChild(dateSpan);
 
         // Add host name if present
@@ -61,7 +66,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         const badgeSpan = document.createElement("span");
         badgeSpan.className = `status-badge ${badgeClass}`;
-        badgeSpan.textContent = game.status;
+        badgeSpan.textContent = game.status || "Pending";
 
         item.appendChild(infoDiv);
         item.appendChild(badgeSpan);
@@ -73,7 +78,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   } catch (err) {
     console.error("Error loading schedule:", err);
-    container.innerHTML =
-      "<p>Unable to load live schedule status right now. Please check back soon!</p>";
+    container.textContent = "";
+    const errorMsg = document.createElement("p");
+    errorMsg.textContent =
+      "Unable to load live schedule status right now. Please check back soon!";
+    container.appendChild(errorMsg);
   }
 });
