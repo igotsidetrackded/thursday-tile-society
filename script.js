@@ -7,10 +7,12 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (!response.ok) throw new Error("Schedule data unavailable");
 
     const data = await response.json();
-    container.innerHTML = ""; // Clear loading text
+    container.textContent = ""; // Clear loading text safely
 
     if (!data.tabs || data.tabs.length === 0) {
-      container.innerHTML = "<p>No upcoming schedule dates found.</p>";
+      const emptyMsg = document.createElement("p");
+      emptyMsg.textContent = "No upcoming schedule dates found.";
+      container.appendChild(emptyMsg);
       return;
     }
 
@@ -20,39 +22,54 @@ document.addEventListener("DOMContentLoaded", async () => {
       monthSection.className = "month-block";
 
       const monthTitle = document.createElement("h3");
-      monthTitle.textContent = tab.tabName;
+      monthTitle.textContent = tab.tabName || "";
       monthSection.appendChild(monthTitle);
 
       const statusList = document.createElement("ul");
       statusList.className = "status-list";
 
       // Loop through each Thursday entry in this month
-      tab.games.forEach((game) => {
+      (tab.games || []).forEach((game) => {
         const item = document.createElement("li");
         item.className = "game-item";
 
+        // Create container for date and host
+        const infoDiv = document.createElement("div");
+        infoDiv.className = "game-info";
+
+        // XSS-safe date rendering
+        const dateSpan = document.createElement("span");
+        dateSpan.className = "game-date";
+        const dateStrong = document.createElement("strong");
+        dateStrong.textContent = game.date || "";
+        dateSpan.appendChild(dateStrong);
+        infoDiv.appendChild(dateSpan);
+
+        // Add host name if present
+        if (game.host) {
+          const hostSpan = document.createElement("span");
+          hostSpan.className = "game-host";
+          hostSpan.textContent = `Host: ${game.host}`;
+          infoDiv.appendChild(hostSpan);
+        }
+
         // Determine badge styling based on status string
-        const statusUpper = String(game.status || "").toUpperCase();
+        // Safely handle missing/null values and case variations
+        const statusText = (game.status || "").toUpperCase();
 
         let badgeClass = "badge-pending";
-        if (statusUpper.includes("CONFIRMED")) {
+        if (statusText.includes("CONFIRMED")) {
           badgeClass = "badge-confirmed";
-        } else if (statusUpper.includes("NEEDS HOST")) {
+        } else if (statusText.includes("NEEDS HOST")) {
           badgeClass = "badge-host";
         }
 
-        const dateSpan = document.createElement("span");
-        dateSpan.className = "game-date";
+        const badgeSpan = document.createElement("span");
+        badgeSpan.className = `status-badge ${badgeClass}`;
+        badgeSpan.textContent = game.status || "Pending";
 
-        const dateStrong = document.createElement("strong");
-        dateStrong.textContent = String(game.date || "");
-        dateSpan.appendChild(dateStrong);
-
-        const statusSpan = document.createElement("span");
-        statusSpan.className = `status-badge ${badgeClass}`;
-        statusSpan.textContent = String(game.status || "");
-
-        item.replaceChildren(dateSpan, statusSpan);
+        item.appendChild(infoDiv);
+        item.appendChild(badgeSpan);
         statusList.appendChild(item);
       });
 
@@ -61,7 +78,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   } catch (err) {
     console.error("Error loading schedule:", err);
-    container.innerHTML =
-      "<p>Unable to load live schedule status right now. Please check back soon!</p>";
+    container.textContent = "";
+    const errorMsg = document.createElement("p");
+    errorMsg.textContent =
+      "Unable to load live schedule status right now. Please check back soon!";
+    container.appendChild(errorMsg);
   }
 });
