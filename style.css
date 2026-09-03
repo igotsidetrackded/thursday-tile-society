@@ -39,6 +39,21 @@ body {
   color: #d69e2e;
 }
 
+/* Flex container to keep logo image and title aligned */
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem; /* Space between tile icon and text */
+}
+
+/* Controls header icon size and prevents distortion */
+.nav-icon {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+  vertical-align: middle;
+}
+
 .hero {
   background: linear-gradient(135deg, #c8b6e2, #503090);
   color: white;
