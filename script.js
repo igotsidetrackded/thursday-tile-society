@@ -49,10 +49,13 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
 
         // Determine badge styling based on status string
+        // Safely handle missing/null values and case variations
+        const statusText = (game.status || "").toUpperCase();
+
         let badgeClass = "badge-pending";
-        if (game.status.includes("CONFIRMED")) {
+        if (statusText.includes("CONFIRMED")) {
           badgeClass = "badge-confirmed";
-        } else if (game.status.includes("NEEDS HOST")) {
+        } else if (statusText.includes("NEEDS HOST")) {
           badgeClass = "badge-host";
         }
 
