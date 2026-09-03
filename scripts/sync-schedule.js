@@ -69,7 +69,6 @@ async function syncSchedule() {
         const colB = (row[1] || "").trim();
 
         // 1. Detect Date Row: Merged row or header above the "Slot #" block
-        // Ignores standard headers and player slot labels
         if (
           colA &&
           colA !== "Slot #" &&
@@ -79,17 +78,18 @@ async function syncSchedule() {
           currentDate = colA;
         }
 
-        // 2. Detect "Game Status" Row: Finds 'Game Status' in Column A, reads status in Column B, and host name in Column C
-if (colA === 'Game Status') {
-  const statusValue = colB || 'Pending';
-  const hostName = (row[2] || '').trim(); // Column C
+        // 2. Detect "Game Status" Row: Reads status in Col B and host name in Col C
+        if (colA === "Game Status") {
+          const statusValue = colB || "Pending";
+          const hostName = (row[2] || "").trim(); // Column C
 
-  games.push({
-    date: currentDate || `${originalTabName} Game`,
-    status: statusValue,
-    host: hostName,
-  });
-}
+          games.push({
+            date: currentDate || `${originalTabName} Game`,
+            status: statusValue,
+            host: hostName,
+          });
+        }
+      }
 
       if (games.length > 0) {
         scheduleOutput.tabs.push({

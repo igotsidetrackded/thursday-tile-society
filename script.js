@@ -28,35 +28,35 @@ document.addEventListener("DOMContentLoaded", async () => {
 
       // Loop through each Thursday entry in this month
       tab.games.forEach((game) => {
-        const item = document.createElement('li');
-        item.className = 'game-item';
+        const item = document.createElement("li");
+        item.className = "game-item";
 
         // Create container for date and host
-        const infoDiv = document.createElement('div');
-        infoDiv.className = 'game-info';
+        const infoDiv = document.createElement("div");
+        infoDiv.className = "game-info";
 
-        const dateSpan = document.createElement('span');
-        dateSpan.className = 'game-date';
+        const dateSpan = document.createElement("span");
+        dateSpan.className = "game-date";
         dateSpan.innerHTML = `<strong>${game.date}</strong>`;
         infoDiv.appendChild(dateSpan);
 
         // Add host name if present
         if (game.host) {
-          const hostSpan = document.createElement('span');
-          hostSpan.className = 'game-host';
+          const hostSpan = document.createElement("span");
+          hostSpan.className = "game-host";
           hostSpan.textContent = `Host: ${game.host}`;
           infoDiv.appendChild(hostSpan);
         }
 
         // Determine badge styling based on status string
-        let badgeClass = 'badge-pending';
-        if (game.status.includes('CONFIRMED')) {
-          badgeClass = 'badge-confirmed';
-        } else if (game.status.includes('NEEDS HOST')) {
-          badgeClass = 'badge-host';
+        let badgeClass = "badge-pending";
+        if (game.status.includes("CONFIRMED")) {
+          badgeClass = "badge-confirmed";
+        } else if (game.status.includes("NEEDS HOST")) {
+          badgeClass = "badge-host";
         }
 
-        const badgeSpan = document.createElement('span');
+        const badgeSpan = document.createElement("span");
         badgeSpan.className = `status-badge ${badgeClass}`;
         badgeSpan.textContent = game.status;
 
