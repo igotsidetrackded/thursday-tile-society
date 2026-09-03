@@ -50,7 +50,8 @@ body {
 .nav-icon {
   width: 28px;
   height: 28px;
-  object-fit: contain;
+  object-fit: cover;
+  border-radius: 6px; /* Clips the outer edges neatly */
   vertical-align: middle;
 }
 
