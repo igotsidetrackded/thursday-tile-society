@@ -38,36 +38,43 @@ document.addEventListener("DOMContentLoaded", async () => {
         foundCurrentMonth = true;
       }
 
-      // 1. Create Month Section Container
-      const monthSection = document.createElement("div");
-      monthSection.className = "month-block";
-
-      // 2. Decide whether to wrap in <details> accordion
+      // Decide whether to render as accordion or standard block
       const isAccordion = foundCurrentMonth && !isCurrentMonth;
-      let listParent = monthSection;
+
+      let listParent;
 
       if (isAccordion) {
+        // Collapsed / Future Month: <details> owns the container styling directly
         const details = document.createElement("details");
         details.className = "month-accordion";
 
         const summary = document.createElement("summary");
         summary.className = "accordion-header";
 
-        const monthTitle = document.createElement("h3");
+        // Accessible non-heading title element inside <summary>
+        const monthTitle = document.createElement("span");
         monthTitle.className = "accordion-title";
         monthTitle.textContent = displayName;
         summary.appendChild(monthTitle);
 
         details.appendChild(summary);
-        monthSection.appendChild(details);
         listParent = details;
+        container.appendChild(details);
       } else {
+        // Current Month: Standalone block card
+        const monthSection = document.createElement("div");
+        monthSection.className = "month-block";
+
         const monthTitle = document.createElement("h3");
+        monthTitle.className = "month-title";
         monthTitle.textContent = displayName;
         monthSection.appendChild(monthTitle);
+
+        listParent = monthSection;
+        container.appendChild(monthSection);
       }
 
-      // 3. Build Games List
+      // Build Games List
       const statusList = document.createElement("ul");
       statusList.className = "status-list";
 
@@ -114,7 +121,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       });
 
       listParent.appendChild(statusList);
-      container.appendChild(monthSection);
     });
   } catch (err) {
     console.error("Error loading schedule:", err);
