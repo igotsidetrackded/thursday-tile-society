@@ -76,6 +76,8 @@ async function syncSchedule() {
           colA !== "Game Status"
         ) {
           currentDate = colA;
+          // Clean the date by stripping '---' and trimming extra spaces
+          const cleanDate = currentDate.replace(/---/g, '').trim();
         }
 
         // 2. Detect "Game Status" Row: Reads status in Col B and host name in Col C
@@ -84,7 +86,7 @@ async function syncSchedule() {
           const hostName = (row[2] || "").trim(); // Column C
 
           games.push({
-            date: currentDate || `${originalTabName} Game`,
+            date: cleanDate || `${originalTabName} Game`,
             status: statusValue,
             host: hostName,
           });
