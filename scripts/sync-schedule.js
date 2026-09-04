@@ -59,6 +59,7 @@ async function syncSchedule() {
       const games = [];
 
       let currentDate = "";
+      let cleanDate = "";
 
       // Loop through all rows in the sheet tab
       for (let i = 0; i < rows.length; i++) {
