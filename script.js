@@ -16,28 +16,69 @@ document.addEventListener("DOMContentLoaded", async () => {
       return;
     }
 
-    // Loop through each tab (month) fetched from Google Sheets
+    // Helper to strip leading/trailing dashes, en-dashes, em-dashes, and spaces
+    const cleanTabName = (name) =>
+      (name || "").replace(/^[\s\-–—]+|[\s\-–—]+$/g, "").trim();
+
+    // Identify current month and year string (e.g., "September '26")
+    const now = new Date();
+    const currentMonthName = now.toLocaleString("en-US", { month: "long" });
+    const currentYearShort = now.getFullYear().toString().slice(-2);
+    const currentMonthTabStr = `${currentMonthName} '${currentYearShort}`;
+
+    // Tracks whether we have already rendered the current month
+    let foundCurrentMonth = false;
+
     data.tabs.forEach((tab) => {
+      const displayName = cleanTabName(tab.tabName);
+      const isCurrentMonth =
+        displayName.toLowerCase() === currentMonthTabStr.toLowerCase();
+
+      if (isCurrentMonth) {
+        foundCurrentMonth = true;
+      }
+
+      // 1. Create Month Section Container
       const monthSection = document.createElement("div");
       monthSection.className = "month-block";
 
-      const monthTitle = document.createElement("h3");
-      monthTitle.textContent = tab.tabName || "";
-      monthSection.appendChild(monthTitle);
+      // 2. Decide whether to wrap in <details> accordion
+      const isAccordion = foundCurrentMonth && !isCurrentMonth;
+      let listParent = monthSection;
 
+      if (isAccordion) {
+        const details = document.createElement("details");
+        details.className = "month-accordion";
+
+        const summary = document.createElement("summary");
+        summary.className = "accordion-header";
+
+        const monthTitle = document.createElement("h3");
+        monthTitle.className = "accordion-title";
+        monthTitle.textContent = displayName;
+        summary.appendChild(monthTitle);
+
+        details.appendChild(summary);
+        monthSection.appendChild(details);
+        listParent = details;
+      } else {
+        const monthTitle = document.createElement("h3");
+        monthTitle.textContent = displayName;
+        monthSection.appendChild(monthTitle);
+      }
+
+      // 3. Build Games List
       const statusList = document.createElement("ul");
       statusList.className = "status-list";
 
-      // Loop through each Thursday entry in this month
       (tab.games || []).forEach((game) => {
         const item = document.createElement("li");
         item.className = "game-item";
 
-        // Create container for date and host
         const infoDiv = document.createElement("div");
         infoDiv.className = "game-info";
 
-        // XSS-safe date rendering
+        // XSS-Safe Date Element Construction
         const dateSpan = document.createElement("span");
         dateSpan.className = "game-date";
         const dateStrong = document.createElement("strong");
@@ -45,7 +86,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         dateSpan.appendChild(dateStrong);
         infoDiv.appendChild(dateSpan);
 
-        // Add host name if present
+        // Host Display
         if (game.host) {
           const hostSpan = document.createElement("span");
           hostSpan.className = "game-host";
@@ -53,8 +94,7 @@ document.addEventListener("DOMContentLoaded", async () => {
           infoDiv.appendChild(hostSpan);
         }
 
-        // Determine badge styling based on status string
-        // Safely handle missing/null values and case variations
+        // Status Normalization
         const statusText = (game.status || "").toUpperCase();
 
         let badgeClass = "badge-pending";
@@ -73,7 +113,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         statusList.appendChild(item);
       });
 
-      monthSection.appendChild(statusList);
+      listParent.appendChild(statusList);
       container.appendChild(monthSection);
     });
   } catch (err) {

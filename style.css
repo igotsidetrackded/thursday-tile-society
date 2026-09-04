@@ -334,3 +334,46 @@ footer {
   color: #64748b;
   font-weight: 500;
 }
+
+/* Month Accordion Styling */
+.month-accordion {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  overflow: hidden;
+  transition: all 0.2s ease-in-out;
+}
+
+.month-accordion[open] {
+  border-color: #cbd5e1;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.accordion-header {
+  padding: 1rem 1.25rem;
+  cursor: pointer;
+  user-select: none;
+  background-color: #f8fafc;
+  display: flex;
+  align-items: center;
+  transition: background-color 0.15s ease;
+}
+
+.accordion-header:hover {
+  background-color: #f1f5f9;
+}
+
+.accordion-title {
+  margin: 0;
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: #1e293b;
+  display: inline-block;
+}
+
+/* Padding for the list inside an open accordion */
+.month-accordion .status-list {
+  padding: 1rem 1.25rem;
+  margin: 0;
+}
