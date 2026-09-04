@@ -4,14 +4,11 @@
   padding: 0;
 }
 
+/* Base Body Styling & Typography */
 body {
   background-color: #faf8f5; /* Warm, soft cream background */
   color: #2d3748; /* Slate text for comfortable reading */
   line-height: 1.6;
-}
-
-/* Sets the default body text font */
-body {
   font-family:
     "Nunito",
     -apple-system,
@@ -19,11 +16,9 @@ body {
     "Segoe UI",
     Roboto,
     sans-serif;
-  color: #2d3748;
-  line-height: 1.6;
 }
 
-/* Applies the bold display font to headings and hero titles */
+/* Bold display font for headings and hero titles */
 h1,
 h2,
 h3,
@@ -36,7 +31,7 @@ h3,
   letter-spacing: -0.02em;
 }
 
-/* Ensure buttons and form controls inherit your chosen body font */
+/* Form controls inherit body font */
 button,
 input,
 select,
@@ -45,6 +40,7 @@ textarea,
   font-family: inherit;
 }
 
+/* Navigation Bar */
 .navbar {
   display: flex;
   justify-content: space-between;
@@ -72,22 +68,21 @@ textarea,
   color: #d69e2e;
 }
 
-/* Flex container to keep logo image and title aligned */
 .logo {
   display: flex;
   align-items: center;
   gap: 0.5rem; /* Space between tile icon and text */
 }
 
-/* Controls header icon size and prevents distortion */
 .nav-icon {
   width: 28px;
   height: 28px;
   object-fit: cover;
-  border-radius: 6px; /* Clips the outer edges neatly */
+  border-radius: 6px;
   vertical-align: middle;
 }
 
+/* Hero Section */
 .hero {
   background: linear-gradient(135deg, #c8b6e2, #503090);
   color: white;
@@ -107,6 +102,7 @@ textarea,
   margin-bottom: 1rem;
 }
 
+/* Main Container & General Cards */
 .container {
   max-width: 800px;
   margin: 2rem auto;
@@ -166,7 +162,7 @@ textarea,
 .schedule-table {
   width: 100%;
   border-collapse: collapse;
-  min-width: 500px; /* Prevents awkward squishing on small mobile screens */
+  min-width: 500px;
 }
 
 .schedule-table th {
@@ -184,6 +180,7 @@ textarea,
   border-bottom: 1px solid #edf2f7;
 }
 
+/* Generic Badges & Buttons */
 .badge {
   padding: 0.25rem 0.6rem;
   border-radius: 12px;
@@ -236,7 +233,7 @@ footer {
   font-size: 0.9rem;
 }
 
-/* Reverses text for human readability while obfuscating raw HTML from spambots */
+/* Email Anti-Spambot Reversal */
 .email-reverse {
   unicode-bidi: bidi-override;
   direction: rtl;
@@ -250,28 +247,66 @@ footer {
   text-align: left;
 }
 
-.month-block {
-  margin-bottom: 2rem;
-  background-color: #ffffff;
+/* Month Cards (Current Month & Accordions) */
+.month-block,
+.month-accordion {
+  background: #ffffff;
   border: 1px solid #e2e8f0;
   border-radius: 8px;
-  padding: 1.25rem 1.5rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+  margin-bottom: 1.5rem;
+  overflow: hidden;
+  transition: all 0.2s ease-in-out;
 }
 
-.month-block h3 {
+.month-block {
+  padding: 1.25rem;
+}
+
+.month-title {
   margin-top: 0;
   margin-bottom: 1rem;
-  font-size: 1.2rem;
-  color: #2d3748;
+  font-size: 1.25rem;
+  color: #1e293b;
   border-bottom: 2px solid #edf2f7;
   padding-bottom: 0.5rem;
 }
 
+/* Accordion Specific Styling */
+.month-accordion[open] {
+  border-color: #cbd5e1;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.accordion-header {
+  padding: 1rem 1.25rem;
+  cursor: pointer;
+  user-select: none;
+  background-color: #f8fafc;
+  display: flex;
+  align-items: center;
+  transition: background-color 0.15s ease;
+}
+
+.accordion-header:hover {
+  background-color: #f1f5f9;
+}
+
+.accordion-title {
+  margin: 0;
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+/* List Items Inside Schedule Cards */
 .status-list {
   list-style: none;
   padding: 0;
   margin: 0;
+}
+
+.month-accordion .status-list {
+  padding: 1rem 1.25rem;
 }
 
 .game-item {
@@ -286,51 +321,48 @@ footer {
   border-bottom: none;
 }
 
-.game-date {
-  font-size: 1rem;
-  color: #4a5568;
-}
-
-/* Status Badges */
-.status-badge {
-  display: inline-block;
-  padding: 0.35rem 0.75rem;
-  font-size: 0.85rem;
-  font-weight: 600;
-  border-radius: 9999px; /* Pill shape */
-  text-align: center;
-  white-space: nowrap;
-}
-
-/* Green Badge: Game On / Confirmed */
-.badge-confirmed {
-  background-color: #d1fae5;
-  color: #065f46;
-  border: 1px solid #a7f3d0;
-}
-
-/* Amber/Orange Badge: Needs Host */
-.badge-host {
-  background-color: #ffedd5;
-  color: #9a3412;
-  border: 1px solid #fed7aa;
-}
-
-/* Yellow/Gray Badge: Needs More Players */
-.badge-pending {
-  background-color: #fef3c7;
-  color: #92400e;
-  border: 1px solid #fde68a;
-}
-
 .game-info {
   display: flex;
   flex-direction: column;
   gap: 0.2rem;
 }
 
+.game-date {
+  font-size: 1rem;
+  color: #4a5568;
+}
+
 .game-host {
   font-size: 0.85rem;
   color: #64748b;
   font-weight: 500;
+}
+
+/* Dynamic Schedule Status Badges */
+.status-badge {
+  display: inline-block;
+  padding: 0.35rem 0.75rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border-radius: 9999px;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.badge-confirmed {
+  background-color: #d1fae5;
+  color: #065f46;
+  border: 1px solid #a7f3d0;
+}
+
+.badge-host {
+  background-color: #ffedd5;
+  color: #9a3412;
+  border: 1px solid #fed7aa;
+}
+
+.badge-pending {
+  background-color: #fef3c7;
+  color: #92400e;
+  border: 1px solid #fde68a;
 }
