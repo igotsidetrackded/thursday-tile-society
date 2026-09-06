@@ -132,14 +132,12 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   const emailLink = document.getElementById("group-email-link");
-  if (emailLink) {
-    emailLink.addEventListener("click", (e) => {
-      const rawHref = emailLink.getAttribute("href");
-      if (rawHref && rawHref.startsWith("mailto:")) {
-        const target = rawHref.replace("mailto:", "");
-        const actualEmail = target.split("").reverse().join("");
-        emailLink.setAttribute("href", `mailto:${actualEmail}`);
-      }
-    });
-  }
+  emailLink.addEventListener("click", () => {
+    const rawHref = emailLink.getAttribute("href") || "";
+    if (!rawHref.startsWith("mailto:")) return;
+    const target = rawHref.slice("mailto:".length);
+    if (!target.startsWith("moc.")) return; // already decoded / not obfuscated
+    const actualEmail = target.split("").reverse().join("");
+    emailLink.setAttribute("href", `mailto:${actualEmail}`);
+  });
 });
