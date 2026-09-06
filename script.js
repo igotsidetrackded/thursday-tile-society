@@ -130,4 +130,16 @@ document.addEventListener("DOMContentLoaded", async () => {
       "Unable to load live schedule status right now. Please check back soon!";
     container.appendChild(errorMsg);
   }
+
+  const emailLink = document.getElementById("group-email-link");
+  if (emailLink) {
+    emailLink.addEventListener("click", (e) => {
+      const rawHref = emailLink.getAttribute("href");
+      if (rawHref && rawHref.startsWith("mailto:")) {
+        const target = rawHref.replace("mailto:", "");
+        const actualEmail = target.split("").reverse().join("");
+        emailLink.setAttribute("href", `mailto:${actualEmail}`);
+      }
+    });
+  }
 });
