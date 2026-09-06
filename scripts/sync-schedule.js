@@ -83,7 +83,10 @@ async function syncSchedule() {
 
         // 2. Detect "Game Status" Row: Reads status in Col B and host name in Col C
         if (colA === "Game Status") {
-          const statusValue = colB || "Pending";
+          // Extract text before the first '(', or use full text if no '(' exists, defaulting to "Pending"
+          const rawStatus = colB || "Pending";
+          const statusValue = rawStatus.split("(")[0].trim();
+
           const hostName = (row[2] || "").trim(); // Column C
 
           games.push({
