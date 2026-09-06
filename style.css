@@ -382,10 +382,11 @@ footer {
   }
 }
 
-.community-card h3 {
-  color: #503090;
+.community-card h2 {
   margin-bottom: 0.35rem;
-  font-size: 1.2rem;
+  font-size: 1.25rem;
+  border-bottom: none;
+  padding-bottom: 0;
 }
 
 .community-card p {
@@ -395,6 +396,6 @@ footer {
 }
 
 .community-card .btn {
-  margin-top: 0; /* Overrides default top margin so it aligns cleanly inside the flex box */
+  margin-top: 0;
   white-space: nowrap;
 }
