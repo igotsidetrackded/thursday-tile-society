@@ -20,17 +20,33 @@ document.addEventListener("DOMContentLoaded", async () => {
     const cleanTabName = (name) =>
       (name || "").replace(/^[\s\-–—]+|[\s\-–—]+$/g, "").trim();
 
-    // Identify current month and year string (e.g., "September '26")
+    // Identify current month and start of current month (for filtering past months)
     const now = new Date();
+    const currentMonthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+
     const currentMonthName = now.toLocaleString("en-US", { month: "long" });
     const currentYearShort = now.getFullYear().toString().slice(-2);
     const currentMonthTabStr = `${currentMonthName} '${currentYearShort}`;
+
+    // Helper to parse tab strings like "September '26" into a Date object
+    const parseTabDate = (displayName) => {
+      // Replaces '26 with 2026 so Date.parse handles it cleanly
+      const normalized = displayName.replace(/'(\d{2})$/, "20$1");
+      return new Date(normalized);
+    };
 
     // Tracks whether we have already rendered the current month
     let foundCurrentMonth = false;
 
     data.tabs.forEach((tab) => {
       const displayName = cleanTabName(tab.tabName);
+
+      // Check if this tab represents a month before the current month
+      const tabDate = parseTabDate(displayName);
+      if (!isNaN(tabDate.getTime()) && tabDate < currentMonthStart) {
+        return; // Skip past months
+      }
+
       const isCurrentMonth =
         displayName.toLowerCase() === currentMonthTabStr.toLowerCase();
 
@@ -101,11 +117,13 @@ document.addEventListener("DOMContentLoaded", async () => {
           infoDiv.appendChild(hostSpan);
         }
 
-        // Status Normalization
+		// Status Normalization
         const statusText = (game.status || "").toUpperCase();
 
         let badgeClass = "badge-pending";
-        if (statusText.includes("CONFIRMED")) {
+        if (statusText.includes("CANCELLED") || statusText.includes("CANCELED")) {
+          badgeClass = "badge-cancelled";
+        } else if (statusText.includes("CONFIRMED")) {
           badgeClass = "badge-confirmed";
         } else if (statusText.includes("NEEDS HOST")) {
           badgeClass = "badge-host";
