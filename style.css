@@ -406,23 +406,46 @@ footer {
   white-space: nowrap;
 }
 
+/* Container reset for updates accordion */
 .updates-accordion {
-  margin-top: 1rem;
+  margin-top: 1.25rem;
+  border: 1px solid var(--border-color, #e5e7eb);
+  border-radius: 8px;
+  background-color: var(--card-bg, #ffffff);
+  overflow: hidden;
 }
 
+/* Fix browser default summary markers and alignment */
+.updates-accordion summary.accordion-header {
+  list-style: none;
+  cursor: pointer;
+  padding: 0.85rem 1rem;
+  font-weight: 600;
+  background-color: var(--header-bg, #f9fafb);
+  user-select: none;
+}
+
+.updates-accordion summary.accordion-header::-webkit-details-marker {
+  display: none;
+}
+
+/* Inner content area padding adjustment */
 .updates-accordion .accordion-content {
-  padding-top: 0.75rem;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
 }
 
+/* Clean up child post margins inside the accordion */
 .updates-accordion .post {
-  border-bottom: 1px solid var(--border-color, #e5e7eb);
+  margin: 0;
   padding-bottom: 1rem;
-  margin-bottom: 1rem;
+  border-bottom: 1px solid var(--border-color, #e5e7eb);
 }
 
 .updates-accordion .post:last-child {
   border-bottom: none;
-  margin-bottom: 0;
   padding-bottom: 0;
 }
 
