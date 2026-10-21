@@ -405,3 +405,24 @@ footer {
   margin-top: 0;
   white-space: nowrap;
 }
+
+.updates-accordion {
+  margin-top: 1rem;
+}
+
+.updates-accordion .accordion-content {
+  padding-top: 0.75rem;
+}
+
+.updates-accordion .post {
+  border-bottom: 1px solid var(--border-color, #e5e7eb);
+  padding-bottom: 1rem;
+  margin-bottom: 1rem;
+}
+
+.updates-accordion .post:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
