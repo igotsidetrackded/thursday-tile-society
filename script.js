@@ -28,11 +28,37 @@ document.addEventListener("DOMContentLoaded", async () => {
     const currentYearShort = now.getFullYear().toString().slice(-2);
     const currentMonthTabStr = `${currentMonthName} '${currentYearShort}`;
 
-    // Helper to parse tab strings like "September '26" into a Date object
+    // Helper to parse tab strings like "September '26" safely across all browsers
     const parseTabDate = (displayName) => {
-      // Replaces '26 with 2026 so Date.parse handles it cleanly
-      const normalized = displayName.replace(/'(\d{2})$/, "20$1");
-      return new Date(normalized);
+      const months = {
+        january: 0,
+        february: 1,
+        march: 2,
+        april: 3,
+        may: 4,
+        june: 5,
+        july: 6,
+        august: 7,
+        september: 8,
+        october: 9,
+        november: 10,
+        december: 11,
+      };
+
+      const parts = displayName.toLowerCase().split(" ");
+      if (parts.length < 2) return new Date(NaN);
+
+      const monthName = parts[0];
+      const monthIndex = months[monthName];
+
+      // Extract year digits (e.g. "'26" -> 2026)
+      const yearMatch = parts[1].match(/\d+/);
+      if (!yearMatch || monthIndex === undefined) return new Date(NaN);
+
+      let year = parseInt(yearMatch[0], 10);
+      if (year < 100) year += 2000; // Handle '26 style short years
+
+      return new Date(year, monthIndex, 1);
     };
 
     // Tracks whether we have already rendered the current month
@@ -117,11 +143,14 @@ document.addEventListener("DOMContentLoaded", async () => {
           infoDiv.appendChild(hostSpan);
         }
 
-		// Status Normalization
+        // Status Normalization
         const statusText = (game.status || "").toUpperCase();
 
         let badgeClass = "badge-pending";
-        if (statusText.includes("CANCELLED") || statusText.includes("CANCELED")) {
+        if (
+          statusText.includes("CANCELLED") ||
+          statusText.includes("CANCELED")
+        ) {
           badgeClass = "badge-cancelled";
         } else if (statusText.includes("CONFIRMED")) {
           badgeClass = "badge-confirmed";
