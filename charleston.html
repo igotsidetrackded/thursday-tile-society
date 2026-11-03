@@ -1,0 +1,960 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Thursday Tile Society - Charleston Trainer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Inter:wght@400;500;600&display=swap");
+
+      body {
+        font-family: "Inter", sans-serif;
+        background-color: #f7f5f0;
+        color: #1f2937;
+      }
+
+      h1,
+      h2,
+      h3,
+      .art-deco-title {
+        font-family: "Cinzel", serif;
+      }
+
+      .tile {
+        width: 54px;
+        height: 74px;
+        border-radius: 8px;
+        user-select: none;
+        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow:
+          0 4px 6px -1px rgba(0, 0, 0, 0.1),
+          0 2px 4px -1px rgba(0, 0, 0, 0.06),
+          inset 0 -3px 0 0 rgba(0, 0, 0, 0.15);
+      }
+
+      .tile:hover {
+        transform: translateY(-4px);
+      }
+
+      .tile.selected {
+        transform: translateY(-12px);
+        box-shadow:
+          0 10px 15px -3px rgba(217, 119, 6, 0.4),
+          0 0 0 3px #d97706 !important;
+      }
+
+      .tile.suggested {
+        box-shadow: 0 0 0 3px #ef4444 !important;
+        animation: pulse 1.5s infinite;
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          transform: translateY(-4px);
+        }
+        50% {
+          transform: translateY(-8px);
+        }
+      }
+
+      .tile-crak {
+        background: linear-gradient(135deg, #ffffff 0%, #fff7ed 100%);
+        border: 1.5px solid #fdba74;
+        color: #c2410c;
+      }
+
+      .tile-bam {
+        background: linear-gradient(135deg, #ffffff 0%, #f0fdf4 100%);
+        border: 1.5px solid #86efac;
+        color: #15803d;
+      }
+
+      .tile-dot {
+        background: linear-gradient(135deg, #ffffff 0%, #f0f9ff 100%);
+        border: 1.5px solid #7dd3fc;
+        color: #0369a1;
+      }
+
+      .tile-wind {
+        background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+        border: 1.5px solid #64748b;
+        color: #334155;
+      }
+
+      .tile-dragon-red {
+        background: linear-gradient(135deg, #fff5f5 0%, #fee2e2 100%);
+        border: 2px solid #ef4444;
+        color: #991b1b;
+      }
+
+      .tile-dragon-green {
+        background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+        border: 2px solid #22c55e;
+        color: #166534;
+      }
+
+      .tile-dragon-white {
+        background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+        border: 2px dashed #0284c7;
+        color: #0369a1;
+      }
+
+      .tile-flower {
+        background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%);
+        border: 1.5px solid #c084fc;
+        color: #7e22ce;
+      }
+
+      .tile-joker {
+        background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+        border: 2px solid #f59e0b;
+        color: #b45309;
+      }
+    </style>
+  </head>
+  <body class="min-h-screen flex flex-col justify-between">
+    <!-- Header Section -->
+    <header
+      class="bg-stone-900 text-amber-50 py-6 px-4 border-b-4 border-amber-600 shadow-md"
+    >
+      <div
+        class="max-w-5xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4"
+      >
+        <div>
+          <h1 class="text-2xl font-bold tracking-wide text-amber-400">
+            Thursday Tile Society
+          </h1>
+          <p class="text-xs text-stone-400 uppercase tracking-widest mt-1">
+            American Mahjong • Charleston Trainer
+          </p>
+        </div>
+        <div class="flex items-center gap-3">
+          <a
+            href="/"
+            class="text-sm text-stone-300 hover:text-amber-400 transition-colors"
+            >← Back to Schedule</a
+          >
+          <button
+            id="reset-btn"
+            class="bg-amber-600 hover:bg-amber-700 text-white text-sm font-semibold px-4 py-2 rounded-md shadow transition-colors"
+          >
+            New Game
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Game Area -->
+    <main class="max-w-5xl mx-auto w-full p-4 flex-grow flex flex-col gap-6">
+      <!-- Status Banner -->
+      <div
+        class="bg-white rounded-xl p-4 shadow-sm border border-stone-200 flex flex-col sm:flex-row justify-between items-center gap-4"
+      >
+        <div>
+          <span
+            class="text-xs font-bold text-amber-700 uppercase tracking-wider"
+            >Current Phase</span
+          >
+          <h2 id="pass-title" class="text-xl font-bold text-stone-800">
+            First Charleston — Pass Right
+          </h2>
+        </div>
+
+        <!-- Normal Pass Controls -->
+        <div id="standard-controls" class="flex items-center gap-3">
+          <button
+            id="hint-btn"
+            class="bg-stone-100 hover:bg-stone-200 text-stone-700 text-sm font-medium px-3.5 py-2 rounded-lg border border-stone-300 transition-colors flex items-center gap-1.5"
+          >
+            <span>💡</span> Coach Hint
+          </button>
+          <button
+            id="pass-btn"
+            disabled
+            class="bg-stone-300 text-stone-500 font-bold px-6 py-2.5 rounded-lg cursor-not-allowed shadow transition-all"
+          >
+            Pass 3 Tiles
+          </button>
+        </div>
+
+        <!-- In-Page Decision Banner for 2nd Charleston -->
+        <div
+          id="decision-controls"
+          class="hidden flex flex-wrap items-center gap-2"
+        >
+          <span
+            class="text-xs font-semibold text-stone-600 mr-1 block sm:inline"
+            >Proceed to 2nd Charleston?</span
+          >
+          <button
+            id="btn-continue-c2"
+            class="bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs px-3.5 py-2 rounded-lg shadow transition-all"
+          >
+            Yes, Start 2nd Charleston
+          </button>
+          <button
+            id="btn-skip-c2"
+            class="bg-stone-600 hover:bg-stone-700 text-white font-bold text-xs px-3.5 py-2 rounded-lg shadow transition-all"
+          >
+            No, Skip to Courtesy Pass
+          </button>
+        </div>
+      </div>
+
+      <!-- Opponent Pass Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div
+          id="box-left"
+          class="bg-stone-800 text-stone-200 p-4 rounded-xl shadow-inner flex flex-col justify-between transition-colors"
+        >
+          <div class="flex justify-between items-center mb-1">
+            <span class="font-semibold text-amber-400"
+              >Opponent Left (Bot)</span
+            >
+            <span
+              id="badge-left"
+              class="text-xs bg-stone-700 px-2 py-0.5 rounded text-stone-300"
+              >Idle</span
+            >
+          </div>
+          <p class="text-xs text-stone-400">
+            Passes to you on 1st Left & 2nd Left
+          </p>
+        </div>
+
+        <div
+          id="box-across"
+          class="bg-stone-800 text-stone-200 p-4 rounded-xl shadow-inner flex flex-col justify-between transition-colors"
+        >
+          <div class="flex justify-between items-center mb-1">
+            <span class="font-semibold text-amber-400"
+              >Opponent Across (Bot)</span
+            >
+            <span
+              id="badge-across"
+              class="text-xs bg-stone-700 px-2 py-0.5 rounded text-stone-300"
+              >Idle</span
+            >
+          </div>
+          <p class="text-xs text-stone-400">
+            Passes to you on Across & Courtesy
+          </p>
+        </div>
+
+        <div
+          id="box-right"
+          class="bg-stone-800 text-stone-200 p-4 rounded-xl shadow-inner flex flex-col justify-between transition-colors"
+        >
+          <div class="flex justify-between items-center mb-1">
+            <span class="font-semibold text-amber-400"
+              >Opponent Right (Bot)</span
+            >
+            <span
+              id="badge-right"
+              class="text-xs bg-stone-700 px-2 py-0.5 rounded text-stone-300"
+              >Idle</span
+            >
+          </div>
+          <p class="text-xs text-stone-400">
+            Receives your 1st Right & 2nd Right
+          </p>
+        </div>
+      </div>
+
+      <!-- Hand & Rack Area -->
+      <div
+        class="bg-stone-200 p-6 rounded-2xl shadow-inner border border-stone-300 flex flex-col gap-4"
+      >
+        <div class="flex justify-between items-center">
+          <h3 class="font-bold text-stone-700 uppercase tracking-wider text-sm">
+            Your Tile Rack (13 Tiles)
+          </h3>
+          <span
+            id="selected-count"
+            class="text-xs font-semibold bg-stone-300 text-stone-700 px-2.5 py-1 rounded-full"
+          >
+            0 / 3 Selected
+          </span>
+        </div>
+
+        <!-- Tile Display -->
+        <div
+          id="rack-tiles"
+          class="flex flex-wrap gap-2.5 justify-center sm:justify-start min-h-[90px] items-center"
+        >
+          <!-- Dynamic JS Tile Rendering -->
+        </div>
+      </div>
+
+      <!-- NMJL Target Hand Analysis Box -->
+      <div
+        class="bg-white p-5 rounded-xl shadow-sm border border-stone-200 flex flex-col gap-4"
+      >
+        <div
+          class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b border-stone-100 pb-3"
+        >
+          <div>
+            <span
+              class="text-xs font-bold uppercase tracking-wider text-amber-600"
+              >NMJL Coach Analysis</span
+            >
+            <h3 id="target-category" class="text-lg font-bold text-stone-800">
+              Calculating Hand Potential...
+            </h3>
+          </div>
+          <div class="text-left sm:text-right">
+            <span class="text-xs text-stone-400 uppercase tracking-wider block"
+              >Hand Cohesion Score</span
+            >
+            <span id="cohesion-score" class="text-2xl font-black text-stone-800"
+              >--%</span
+            >
+          </div>
+        </div>
+
+        <!-- Category Breakdown Grid -->
+        <div>
+          <span
+            class="text-xs font-semibold text-stone-500 uppercase tracking-wider block mb-2"
+            >NMJL Card Category Match Chances:</span
+          >
+          <div
+            id="category-breakdown"
+            class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-7 gap-3"
+          >
+            <!-- Dynamic category bars injected here -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Tile Legend -->
+      <div
+        class="bg-white p-4 rounded-xl shadow-sm border border-stone-200 text-xs text-stone-600 flex flex-wrap gap-6 justify-center"
+      >
+        <div class="flex items-center gap-2">
+          <span
+            class="w-4 h-4 rounded border border-amber-400 bg-amber-50 inline-block"
+          ></span>
+          <span><strong>Crak:</strong> Red / Orange</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <span
+            class="w-4 h-4 rounded border border-green-400 bg-green-50 inline-block"
+          ></span>
+          <span><strong>Bam:</strong> Green</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <span
+            class="w-4 h-4 rounded border border-sky-400 bg-sky-50 inline-block"
+          ></span>
+          <span><strong>Dot:</strong> Blue</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <span
+            class="w-4 h-4 rounded border border-slate-400 bg-slate-100 inline-block"
+          ></span>
+          <span><strong>Winds (N, E, W, S)</strong></span>
+        </div>
+        <div class="flex items-center gap-2">
+          <span
+            class="w-4 h-4 rounded border-2 border-purple-400 bg-purple-50 inline-block"
+          ></span>
+          <span><strong>Flowers (8 Tiles)</strong></span>
+        </div>
+        <div class="flex items-center gap-2">
+          <span
+            class="w-4 h-4 rounded border-2 border-red-500 bg-red-50 inline-block"
+          ></span>
+          <span><strong>Red Dragon (中)</strong></span>
+        </div>
+        <div class="flex items-center gap-2">
+          <span
+            class="w-4 h-4 rounded border-2 border-green-500 bg-green-50 inline-block"
+          ></span>
+          <span><strong>Green Dragon (發)</strong></span>
+        </div>
+        <div class="flex items-center gap-2">
+          <span
+            class="w-4 h-4 rounded border-2 border-dashed border-sky-600 bg-slate-50 inline-block"
+          ></span>
+          <span><strong>White Dragon (Soap / 白)</strong></span>
+        </div>
+      </div>
+    </main>
+
+    <footer
+      class="text-center py-4 text-xs text-stone-500 border-t border-stone-200"
+    >
+      Thursday Tile Society • Designed for Local Practice
+    </footer>
+
+    <script>
+      const SUITS = ["crak", "bam", "dot"];
+
+      const WINDS = [
+        { id: "north", name: "North Wind", char: "N", class: "tile-wind" },
+        { id: "east", name: "East Wind", char: "E", class: "tile-wind" },
+        { id: "west", name: "West Wind", char: "W", class: "tile-wind" },
+        { id: "south", name: "South Wind", char: "S", class: "tile-wind" },
+      ];
+
+      const DRAGONS = [
+        { id: "red", name: "Red Dragon", char: "中", class: "tile-dragon-red" },
+        {
+          id: "green",
+          name: "Green Dragon",
+          char: "發",
+          class: "tile-dragon-green",
+        },
+        {
+          id: "white",
+          name: "White Dragon",
+          char: "白",
+          class: "tile-dragon-white",
+        },
+      ];
+
+      const FLOWERS = [
+        { num: 1, char: "🌸", class: "tile-flower" },
+        { num: 2, char: "🌼", class: "tile-flower" },
+        { num: 3, char: "🌺", class: "tile-flower" },
+        { num: 4, char: "🌻", class: "tile-flower" },
+        { num: 5, char: "🌷", class: "tile-flower" },
+        { num: 6, char: "🌹", class: "tile-flower" },
+        { num: 7, char: "🪷", class: "tile-flower" },
+        { num: 8, char: "💐", class: "tile-flower" },
+      ];
+
+      let currentPassStep = 0;
+      let isGameOver = false;
+      let isAwaitingDecision = false;
+
+      const passSteps = [
+        {
+          id: "c1_right",
+          name: "First Charleston — Pass Right",
+          dir: "right",
+          allowBlind: false,
+          forceThree: true,
+        },
+        {
+          id: "c1_across",
+          name: "First Charleston — Pass Across",
+          dir: "across",
+          allowBlind: false,
+          forceThree: true,
+        },
+        {
+          id: "c1_left",
+          name: "First Charleston — Pass Left (Blind Pass 0-3)",
+          dir: "left",
+          allowBlind: true,
+          forceThree: false,
+        },
+        {
+          id: "c2_left",
+          name: "Second Charleston — Pass Left",
+          dir: "left",
+          allowBlind: false,
+          forceThree: true,
+        },
+        {
+          id: "c2_across",
+          name: "Second Charleston — Pass Across",
+          dir: "across",
+          allowBlind: false,
+          forceThree: true,
+        },
+        {
+          id: "c2_right",
+          name: "Second Charleston — Pass Right (Blind Pass 0-3)",
+          dir: "right",
+          allowBlind: true,
+          forceThree: false,
+        },
+        {
+          id: "courtesy",
+          name: "Optional Courtesy Pass Across (0-3 Tiles)",
+          dir: "across",
+          allowBlind: true,
+          forceThree: false,
+        },
+      ];
+
+      let playerRack = [];
+      let selectedIndices = [];
+      let suggestedIndices = [];
+      let drawPile = [];
+
+      function fisherYatesShuffle(array) {
+        const arr = [...array];
+        for (let i = arr.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+        return arr;
+      }
+
+      function createFullDeck() {
+        const deck = [];
+
+        SUITS.forEach((suit) => {
+          for (let num = 1; num <= 9; num++) {
+            for (let i = 0; i < 4; i++) {
+              deck.push({
+                type: "number",
+                suit,
+                value: num,
+                label: `${num} ${suit.toUpperCase()}`,
+                class: `tile-${suit}`,
+              });
+            }
+          }
+        });
+
+        WINDS.forEach((w) => {
+          for (let i = 0; i < 4; i++) {
+            deck.push({ type: "wind", ...w, label: w.name });
+          }
+        });
+
+        DRAGONS.forEach((d) => {
+          for (let i = 0; i < 4; i++) {
+            deck.push({ type: "dragon", ...d, label: d.name });
+          }
+        });
+
+        FLOWERS.forEach((f) => {
+          deck.push({
+            type: "flower",
+            name: `Flower ${f.num}`,
+            ...f,
+            label: `Flower ${f.num}`,
+          });
+        });
+
+        for (let i = 0; i < 8; i++) {
+          deck.push({ type: "joker", label: "JOKER", class: "tile-joker" });
+        }
+
+        return fisherYatesShuffle(deck);
+      }
+
+      function initGame() {
+        drawPile = createFullDeck();
+        playerRack = drawPile.splice(0, 13);
+        selectedIndices = [];
+        suggestedIndices = [];
+        currentPassStep = 0;
+        isGameOver = false;
+        isAwaitingDecision = false;
+        sortRack();
+        analyzeHand();
+        render();
+      }
+
+      function sortRack() {
+        const typeOrder = {
+          number: 1,
+          wind: 2,
+          dragon: 3,
+          flower: 4,
+          joker: 5,
+        };
+        playerRack.sort((a, b) => {
+          if (typeOrder[a.type] !== typeOrder[b.type])
+            return typeOrder[a.type] - typeOrder[b.type];
+          if (a.suit && b.suit && a.suit !== b.suit)
+            return a.suit.localeCompare(b.suit);
+          return (a.value || a.num || 0) - (b.value || b.num || 0);
+        });
+      }
+
+      function drawBotTiles(count) {
+        const drawn = [];
+        while (drawn.length < count && drawPile.length > 0) {
+          const candidate = drawPile.shift();
+          if (candidate.type !== "joker") {
+            drawn.push(candidate);
+          } else {
+            drawPile.push(candidate);
+          }
+        }
+        return drawn;
+      }
+
+      function analyzeHand() {
+        let evens = 0,
+          odds = 0,
+          winds = 0,
+          dragons = 0,
+          jokers = 0,
+          flowers = 0;
+        const suitCounts = { crak: 0, bam: 0, dot: 0 };
+        const numberCounts = {
+          1: 0,
+          2: 0,
+          3: 0,
+          4: 0,
+          5: 0,
+          6: 0,
+          7: 0,
+          8: 0,
+          9: 0,
+        };
+
+        playerRack.forEach((t) => {
+          if (t.type === "number") {
+            suitCounts[t.suit]++;
+            numberCounts[t.value]++;
+            if (t.value % 2 === 0) evens++;
+            else odds++;
+          } else if (t.type === "wind") {
+            winds++;
+          } else if (t.type === "dragon") {
+            dragons++;
+          } else if (t.type === "flower") {
+            flowers++;
+          } else if (t.type === "joker") {
+            jokers++;
+          }
+        });
+
+        const totalTiles = 13;
+        const evenPct = Math.min(
+          95,
+          Math.max(
+            10,
+            Math.round(
+              ((evens + jokers * 0.5 + flowers * 0.5) / totalTiles) * 100,
+            ),
+          ),
+        );
+        const oddPct = Math.min(
+          95,
+          Math.max(
+            10,
+            Math.round(
+              ((odds + jokers * 0.5 + flowers * 0.5) / totalTiles) * 100,
+            ),
+          ),
+        );
+
+        const maxSuit = Math.max(
+          suitCounts.crak,
+          suitCounts.bam,
+          suitCounts.dot,
+        );
+        const runPct = Math.min(
+          95,
+          Math.max(
+            15,
+            Math.round(
+              ((maxSuit + jokers * 0.5 + flowers * 0.5) / totalTiles) * 100,
+            ),
+          ),
+        );
+
+        const windsAndDragonsCount = winds + dragons;
+        const dragonPct = Math.min(
+          95,
+          Math.max(
+            5,
+            Math.round(
+              ((windsAndDragonsCount + jokers * 0.5) / totalTiles) * 100,
+            ),
+          ),
+        );
+
+        // 3, 6, 9 category metric
+        const count369 = numberCounts[3] + numberCounts[6] + numberCounts[9];
+        const pct369 = Math.min(
+          95,
+          Math.max(
+            5,
+            Math.round(
+              ((count369 + jokers * 0.5 + flowers * 0.5) / totalTiles) * 100,
+            ),
+          ),
+        );
+
+        // Any Like Number metric (max frequency of any single numeric rank across suits)
+        const maxLikeNum = Math.max(...Object.values(numberCounts));
+        const pctLikeNum = Math.min(
+          95,
+          Math.max(5, Math.round(((maxLikeNum + jokers * 0.5) / 4) * 100)),
+        );
+
+        // 2026 Year category metric (2s, White Dragons/soaps as 0s, 6s)
+        const whiteDragons = playerRack.filter(
+          (t) => t.type === "dragon" && t.id === "white",
+        ).length;
+        const yearTiles = numberCounts[2] + whiteDragons + numberCounts[6];
+        const pct2026 = Math.min(
+          95,
+          Math.max(
+            5,
+            Math.round(((yearTiles + jokers * 0.5) / totalTiles) * 100),
+          ),
+        );
+
+        const categories = [
+          { name: "2468 (Evens)", pct: evenPct },
+          { name: "13579 (Odds)", pct: oddPct },
+          { name: "Consecutive Run", pct: runPct },
+          { name: "369", pct: pct369 },
+          { name: "Any Like Numbers", pct: pctLikeNum },
+          { name: "2026", pct: pct2026 },
+          { name: "Winds & Dragons", pct: dragonPct },
+        ];
+
+        categories.sort((a, b) => b.pct - a.pct);
+        const bestCat = categories[0];
+
+        document.getElementById("target-category").textContent =
+          `Top Potential: ${bestCat.name} (${bestCat.pct}%)`;
+        document.getElementById("cohesion-score").textContent =
+          `${bestCat.pct}%`;
+
+        const breakdownContainer =
+          document.getElementById("category-breakdown");
+        breakdownContainer.innerHTML = "";
+        categories.forEach((cat) => {
+          const card = document.createElement("div");
+          card.className =
+            "bg-stone-50 p-2.5 rounded-lg border border-stone-200 flex flex-col justify-between";
+          card.innerHTML = `
+          <div class="flex justify-between items-center mb-1">
+            <span class="text-xs font-semibold text-stone-700">${cat.name}</span>
+            <span class="text-xs font-bold text-amber-700">${cat.pct}%</span>
+          </div>
+          <div class="w-full bg-stone-200 h-1.5 rounded-full overflow-hidden">
+            <div class="bg-amber-600 h-full rounded-full" style="width: ${cat.pct}%"></div>
+          </div>
+        `;
+          breakdownContainer.appendChild(card);
+        });
+
+        const primarySuit = Object.keys(suitCounts).reduce((a, b) =>
+          suitCounts[a] > suitCounts[b] ? a : b,
+        );
+        const weakIndices = [];
+        playerRack.forEach((t, idx) => {
+          if (
+            t.type === "number" &&
+            t.suit !== primarySuit &&
+            weakIndices.length < 3
+          ) {
+            weakIndices.push(idx);
+          }
+        });
+
+        while (weakIndices.length < 3) {
+          const nextIdx = playerRack.findIndex(
+            (_, i) =>
+              !weakIndices.includes(i) && playerRack[i].type !== "joker",
+          );
+          if (nextIdx !== -1) weakIndices.push(nextIdx);
+          else break;
+        }
+
+        return weakIndices;
+      }
+
+      function render() {
+        const rackContainer = document.getElementById("rack-tiles");
+        rackContainer.innerHTML = "";
+
+        playerRack.forEach((tile, index) => {
+          const btn = document.createElement("button");
+          const isSelected = selectedIndices.includes(index);
+          const isSuggested = suggestedIndices.includes(index);
+
+          let tileClass = tile.class || "tile-crak";
+          btn.className = `tile ${tileClass} flex flex-col justify-between p-1.5 text-center font-bold relative ${isSelected ? "selected" : ""} ${isSuggested ? "suggested" : ""}`;
+
+          if (tile.type === "dragon") {
+            btn.innerHTML = `
+            <span class="text-[10px] opacity-75 leading-none">${tile.name.split(" ")[0]}</span>
+            <span class="text-xl my-auto leading-none">${tile.char}</span>
+            <span class="text-[9px] opacity-60 leading-none">DRAGON</span>
+          `;
+          } else if (tile.type === "wind") {
+            btn.innerHTML = `
+            <span class="text-[10px] opacity-75 leading-none">WIND</span>
+            <span class="text-2xl font-black my-auto leading-none text-slate-700">${tile.char}</span>
+            <span class="text-[9px] opacity-60 leading-none">${tile.name.split(" ")[0].toUpperCase()}</span>
+          `;
+          } else if (tile.type === "flower") {
+            btn.innerHTML = `
+            <span class="text-[9px] opacity-75 leading-none">FLOWER</span>
+            <span class="text-xl my-auto leading-none">${tile.char}</span>
+            <span class="text-[9px] opacity-60 leading-none">#${tile.num}</span>
+          `;
+          } else if (tile.type === "joker") {
+            btn.innerHTML = `
+            <span class="text-[10px] text-amber-700 leading-none">★</span>
+            <span class="text-xs font-extrabold text-amber-800 my-auto">JOKER</span>
+            <span class="text-[10px] text-amber-700 leading-none">★</span>
+          `;
+          } else {
+            btn.innerHTML = `
+            <span class="text-xs font-bold leading-none opacity-80">${tile.value}</span>
+            <span class="text-sm font-black uppercase tracking-tight my-auto leading-none">${tile.suit}</span>
+            <span class="text-xs font-bold leading-none opacity-80">${tile.value}</span>
+          `;
+          }
+
+          btn.onclick = () => toggleSelect(index);
+          if (isGameOver || isAwaitingDecision) btn.disabled = true;
+          rackContainer.appendChild(btn);
+        });
+
+        const step = passSteps[currentPassStep];
+        const selectedCount = selectedIndices.length;
+        document.getElementById("selected-count").textContent =
+          `${selectedCount} / 3 Selected`;
+
+        const passBtn = document.getElementById("pass-btn");
+        const hintBtn = document.getElementById("hint-btn");
+        const stdControls = document.getElementById("standard-controls");
+        const decControls = document.getElementById("decision-controls");
+
+        if (isAwaitingDecision) {
+          stdControls.classList.add("hidden");
+          decControls.classList.remove("hidden");
+          document.getElementById("pass-title").textContent =
+            "First Left Complete — Decide Next Step";
+        } else {
+          stdControls.classList.remove("hidden");
+          decControls.classList.add("hidden");
+
+          if (isGameOver) {
+            passBtn.disabled = true;
+            hintBtn.disabled = true;
+            passBtn.className =
+              "bg-stone-300 text-stone-500 font-bold px-6 py-2.5 rounded-lg cursor-not-allowed shadow transition-all";
+            document.getElementById("pass-title").textContent =
+              "Charleston Finished — Final Starting Hand";
+          } else {
+            hintBtn.disabled = false;
+            document.getElementById("pass-title").textContent = step.name;
+
+            let canPass = false;
+            if (step.forceThree) {
+              canPass = selectedCount === 3;
+              passBtn.textContent = "Pass 3 Tiles";
+            } else {
+              canPass = selectedCount <= 3;
+              passBtn.textContent = `Complete Pass (${selectedCount} Tile${selectedCount === 1 ? "" : "s"})`;
+            }
+
+            if (canPass) {
+              passBtn.disabled = false;
+              passBtn.className =
+                "bg-amber-600 hover:bg-amber-700 text-white font-bold px-6 py-2.5 rounded-lg shadow cursor-pointer transition-all";
+            } else {
+              passBtn.disabled = true;
+              passBtn.className =
+                "bg-stone-300 text-stone-500 font-bold px-6 py-2.5 rounded-lg cursor-not-allowed shadow transition-all";
+            }
+          }
+        }
+
+        ["left", "across", "right"].forEach((dir) => {
+          const box = document.getElementById(`box-${dir}`);
+          const badge = document.getElementById(`badge-${dir}`);
+          if (!isGameOver && !isAwaitingDecision && step && step.dir === dir) {
+            box.className =
+              "bg-amber-900 border-2 border-amber-500 text-stone-100 p-4 rounded-xl shadow-inner flex flex-col justify-between transition-colors";
+            badge.className =
+              "text-xs bg-amber-600 px-2 py-0.5 rounded text-white font-bold animate-pulse";
+            badge.textContent = "ACTIVE PASS";
+          } else {
+            box.className =
+              "bg-stone-800 text-stone-200 p-4 rounded-xl shadow-inner flex flex-col justify-between transition-colors";
+            badge.className =
+              "text-xs bg-stone-700 px-2 py-0.5 rounded text-stone-300";
+            badge.textContent = "Idle";
+          }
+        });
+      }
+
+      function toggleSelect(index) {
+        if (isGameOver || isAwaitingDecision) return;
+        suggestedIndices = [];
+
+        if (playerRack[index].type === "joker") {
+          alert("Jokers cannot be passed in the Charleston!");
+          return;
+        }
+
+        if (selectedIndices.includes(index)) {
+          selectedIndices = selectedIndices.filter((i) => i !== index);
+        } else if (selectedIndices.length < 3) {
+          selectedIndices.push(index);
+        }
+        render();
+      }
+
+      document.getElementById("hint-btn").onclick = () => {
+        if (isGameOver || isAwaitingDecision) return;
+        suggestedIndices = analyzeHand();
+        selectedIndices = [...suggestedIndices];
+        render();
+      };
+
+      document.getElementById("pass-btn").onclick = () => {
+        if (isGameOver || isAwaitingDecision) return;
+        const step = passSteps[currentPassStep];
+        const passedCount = selectedIndices.length;
+
+        playerRack = playerRack.filter(
+          (_, idx) => !selectedIndices.includes(idx),
+        );
+
+        const incomingCount = step.forceThree ? 3 : passedCount;
+        const incoming = drawBotTiles(incomingCount);
+        playerRack.push(...incoming);
+
+        selectedIndices = [];
+        suggestedIndices = [];
+        sortRack();
+        analyzeHand();
+        render();
+
+        if (step.id === "c1_left") {
+          isAwaitingDecision = true;
+          render();
+          return;
+        }
+
+        currentPassStep++;
+
+        if (currentPassStep >= passSteps.length) {
+          isGameOver = true;
+        }
+
+        render();
+      };
+
+      document.getElementById("btn-continue-c2").onclick = () => {
+        isAwaitingDecision = false;
+        currentPassStep++;
+        render();
+      };
+
+      document.getElementById("btn-skip-c2").onclick = () => {
+        isAwaitingDecision = false;
+        currentPassStep = passSteps.findIndex((s) => s.id === "courtesy");
+        render();
+      };
+
+      document.getElementById("reset-btn").onclick = initGame;
+
+      initGame();
+    </script>
+  </body>
+</html>
