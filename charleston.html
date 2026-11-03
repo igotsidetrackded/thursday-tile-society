@@ -642,17 +642,32 @@
           ),
         );
 
-        const maxSuit = Math.max(
-          suitCounts.crak,
-          suitCounts.bam,
-          suitCounts.dot,
+        const maxRun = Math.max(
+          ...SUITS.map((suit) => {
+            const values = new Set(
+              playerRack
+                .filter((t) => t.type === "number" && t.suit === suit)
+                .map((t) => t.value),
+            );
+            let longest = 0;
+            let current = 0;
+            for (let value = 1; value <= 9; value++) {
+              if (values.has(value)) {
+                current++;
+                longest = Math.max(longest, current);
+              } else {
+                current = 0;
+              }
+            }
+            return longest;
+          }),
         );
         const runPct = Math.min(
           95,
           Math.max(
             15,
             Math.round(
-              ((maxSuit + jokers * 0.5 + flowers * 0.5) / totalTiles) * 100,
+              ((maxRun + jokers * 0.5 + flowers * 0.5) / totalTiles) * 100,
             ),
           ),
         );
