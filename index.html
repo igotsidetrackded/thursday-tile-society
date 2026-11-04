@@ -1,16 +1,6 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-DZ3PLKV9YG"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'G-DZ3PLKV9YG');
-    </script>
-    
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!-- Updated to stay under 125 characters for mobile SERPs -->
@@ -364,6 +354,89 @@
           >moc.spuorgelgoog@yteicos-elit-yadsruht</a
         >
       </p>
+      <section class="analytics-consent" aria-labelledby="analytics-consent-title">
+        <h2 id="analytics-consent-title">Analytics preferences</h2>
+        <p>
+          Google Analytics is optional. If enabled, it may use cookies and
+          collect usage, browser, and device information, which Google
+          processes under its
+          <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">Privacy Policy</a>.
+          Analytics is not loaded unless you choose to allow it. You can change
+          your choice here at any time.
+        </p>
+        <button class="btn" id="allow-analytics" type="button">Allow analytics</button>
+        <button class="btn" id="disable-analytics" type="button">Keep analytics off</button>
+        <p id="analytics-consent-status" role="status" aria-live="polite">
+          Analytics are off unless you choose to allow them.
+        </p>
+      </section>
     </footer>
+    <script>
+      const analyticsId = "G-DZ3PLKV9YG";
+      const analyticsPreferenceKey = "analytics-consent";
+      const analyticsStatus = document.getElementById("analytics-consent-status");
+      let analyticsLoaded = false;
+
+      function loadAnalytics() {
+        window[`ga-disable-${analyticsId}`] = false;
+        if (analyticsLoaded) {
+          window.gtag("config", analyticsId);
+          return;
+        }
+
+        window.dataLayer = window.dataLayer || [];
+        window.gtag = function () {
+          window.dataLayer.push(arguments);
+        };
+        window.gtag("js", new Date());
+        window.gtag("config", analyticsId);
+
+        const script = document.createElement("script");
+        script.async = true;
+        script.src = `https://www.googletagmanager.com/gtag/js?id=${analyticsId}`;
+        document.head.appendChild(script);
+        analyticsLoaded = true;
+      }
+
+      function setAnalyticsConsent(allowed) {
+        try {
+          localStorage.setItem(
+            analyticsPreferenceKey,
+            allowed ? "granted" : "denied",
+          );
+        } catch {
+          // Keep the choice for this page view when storage is unavailable.
+        }
+
+        window[`ga-disable-${analyticsId}`] = !allowed;
+        if (allowed) {
+          loadAnalytics();
+          analyticsStatus.textContent = "Analytics are enabled.";
+        } else {
+          analyticsStatus.textContent = "Analytics are off.";
+        }
+      }
+
+      document
+        .getElementById("allow-analytics")
+        .addEventListener("click", () => setAnalyticsConsent(true));
+      document
+        .getElementById("disable-analytics")
+        .addEventListener("click", () => setAnalyticsConsent(false));
+
+      let savedAnalyticsPreference;
+      try {
+        savedAnalyticsPreference = localStorage.getItem(analyticsPreferenceKey);
+      } catch {
+        savedAnalyticsPreference = null;
+      }
+
+      if (savedAnalyticsPreference === "granted") {
+        loadAnalytics();
+        analyticsStatus.textContent = "Analytics are enabled.";
+      } else {
+        window[`ga-disable-${analyticsId}`] = true;
+      }
+    </script>
   </body>
 </html>
