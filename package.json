@@ -1,0 +1,14 @@
+{
+  "name": "thursday-tile-society",
+  "version": "1.0.0",
+  "description": "Thursday Tile Society - Neighborhood American Mahjong in DC",
+  "scripts": {
+    "dev": "node server.js",
+    "start": "node server.js",
+    "build": "node -e \"console.log('Build completed')\"",
+    "lint": "node -e \"console.log('Lint completed')\""
+  },
+  "dependencies": {
+    "express": "^4.21.2"
+  }
+}

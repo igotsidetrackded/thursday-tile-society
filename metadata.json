@@ -1,0 +1,8 @@
+{
+  "name": "Thursday Tile Society",
+  "description": "Join our weekly American Mahjong league in D.C.! Find game schedules, house rules, and player signups.",
+  "permissions": [],
+  "capabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
