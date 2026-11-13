@@ -207,35 +207,32 @@
       <p>
         <a href="index.html">Back to Home &amp; Schedule</a>
       </p>
+      <p class="analytics-note">
+        This site uses Google Analytics (<a
+          href="https://policies.google.com/privacy"
+          target="_blank"
+          rel="noopener noreferrer"
+          >Privacy Policy</a
+        >).
+        <button
+          id="analytics-toggle"
+          type="button"
+          class="analytics-toggle-btn"
+        >
+          Opt out
+        </button>
+        <span
+          id="analytics-consent-status"
+          class="analytics-status"
+          role="status"
+          aria-live="polite"
+        ></span>
+      </p>
     </footer>
 
+    <script src="analytics.js"></script>
     <script>
       document.getElementById("year").textContent = new Date().getFullYear();
-
-      // Honor analytics consent saved from the home page
-      const analyticsId = "G-DZ3PLKV9YG";
-      let savedAnalyticsPreference = null;
-      try {
-        savedAnalyticsPreference = localStorage.getItem("analytics-consent");
-      } catch {
-        savedAnalyticsPreference = null;
-      }
-
-      if (savedAnalyticsPreference === "granted") {
-        window[`ga-disable-${analyticsId}`] = false;
-        window.dataLayer = window.dataLayer || [];
-        window.gtag = function () {
-          window.dataLayer.push(arguments);
-        };
-        window.gtag("js", new Date());
-        window.gtag("config", analyticsId);
-        const gaScript = document.createElement("script");
-        gaScript.async = true;
-        gaScript.src = `https://www.googletagmanager.com/gtag/js?id=${analyticsId}`;
-        document.head.appendChild(gaScript);
-      } else {
-        window[`ga-disable-${analyticsId}`] = true;
-      }
 
       const SUITS = ["crak", "bam", "dot"];
 
