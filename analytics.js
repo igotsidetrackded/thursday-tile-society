@@ -80,4 +80,9 @@
       updateUI(isOptedOut, true);
     });
   }
+
+  window.trackEvent = (eventName, params = {}) => {
+    if (isOptedOut || typeof window.gtag !== "function") return;
+    window.gtag("event", eventName, params);
+  };
 })();

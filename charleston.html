@@ -330,6 +330,9 @@
       let selectedIndices = [];
       let suggestedIndices = [];
       let drawPile = [];
+      let lastBestCategory = { name: "", pct: 0 };
+      let hintsUsedThisRound = 0;
+      let hintUsedThisStep = false;
 
       function setFeedback(message) {
         const feedbackEl = document.getElementById("rack-feedback");
@@ -396,7 +399,7 @@
         return fisherYatesShuffle(deck);
       }
 
-      function initGame() {
+      function initGame(isReset = false) {
         drawPile = createFullDeck();
         playerRack = drawPile.splice(0, 13);
         selectedIndices = [];
@@ -404,10 +407,15 @@
         currentPassStep = 0;
         isGameOver = false;
         isAwaitingDecision = false;
+        hintsUsedThisRound = 0;
+        hintUsedThisStep = false;
         setFeedback("");
         sortRack();
         analyzeHand();
         render();
+        window.trackEvent?.("charleston_round_start", {
+          trigger: isReset ? "new_game" : "page_load",
+        });
       }
 
       function sortRack() {
@@ -582,6 +590,7 @@
 
         categories.sort((a, b) => b.pct - a.pct);
         const bestCat = categories[0];
+        lastBestCategory = bestCat;
 
         document.getElementById("target-category").textContent =
           `Top Potential: ${bestCat.name} (${bestCat.pct}%)`;
@@ -771,6 +780,13 @@
         setFeedback("");
         suggestedIndices = analyzeHand();
         selectedIndices = [...suggestedIndices];
+        hintsUsedThisRound++;
+        hintUsedThisStep = true;
+        window.trackEvent?.("charleston_hint", {
+          pass_step: passSteps[currentPassStep]?.id || "unknown",
+          top_category: lastBestCategory.name,
+          cohesion_score: lastBestCategory.pct,
+        });
         render();
       };
 
@@ -779,6 +795,8 @@
         setFeedback("");
         const step = passSteps[currentPassStep];
         const passedCount = selectedIndices.length;
+        const usedHint = hintUsedThisStep;
+        hintUsedThisStep = false;
 
         playerRack = playerRack.filter(
           (_, idx) => !selectedIndices.includes(idx),
@@ -794,6 +812,12 @@
         analyzeHand();
         render();
 
+        window.trackEvent?.("charleston_pass", {
+          pass_step: step.id,
+          tiles_passed: passedCount,
+          used_hint: usedHint,
+        });
+
         if (step.id === "c1_left") {
           isAwaitingDecision = true;
           render();
@@ -804,6 +828,11 @@
 
         if (currentPassStep >= passSteps.length) {
           isGameOver = true;
+          window.trackEvent?.("charleston_complete", {
+            top_category: lastBestCategory.name,
+            cohesion_score: lastBestCategory.pct,
+            hints_used: hintsUsedThisRound,
+          });
         }
 
         render();
@@ -812,20 +841,28 @@
       document.getElementById("btn-continue-c2").onclick = () => {
         setFeedback("");
         isAwaitingDecision = false;
+        hintUsedThisStep = false;
         currentPassStep++;
+        window.trackEvent?.("charleston_second_round_decision", {
+          decision: "continue",
+        });
         render();
       };
 
       document.getElementById("btn-skip-c2").onclick = () => {
         setFeedback("");
         isAwaitingDecision = false;
+        hintUsedThisStep = false;
         currentPassStep = passSteps.findIndex((s) => s.id === "courtesy");
+        window.trackEvent?.("charleston_second_round_decision", {
+          decision: "skip_to_courtesy",
+        });
         render();
       };
 
-      document.getElementById("reset-btn").onclick = initGame;
+      document.getElementById("reset-btn").onclick = () => initGame(true);
 
-      initGame();
+      initGame(false);
     </script>
   </body>
 </html>

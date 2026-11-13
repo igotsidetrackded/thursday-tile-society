@@ -100,6 +100,13 @@ document.addEventListener("DOMContentLoaded", async () => {
         summary.appendChild(monthTitle);
 
         details.appendChild(summary);
+        details.addEventListener("toggle", () => {
+          if (details.open) {
+            window.trackEvent?.("schedule_accordion_open", {
+              month: displayName,
+            });
+          }
+        });
         listParent = details;
         container.appendChild(details);
       } else {
@@ -179,12 +186,33 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   const emailLink = document.getElementById("group-email-link");
-  emailLink.addEventListener("click", () => {
-    const rawHref = emailLink.getAttribute("href") || "";
-    if (!rawHref.startsWith("mailto:")) return;
-    const target = rawHref.slice("mailto:".length);
-    if (!target.startsWith("moc.")) return; // already decoded / not obfuscated
-    const actualEmail = target.split("").reverse().join("");
-    emailLink.setAttribute("href", `mailto:${actualEmail}`);
+  if (emailLink) {
+    emailLink.addEventListener("click", () => {
+      window.trackEvent?.("group_email_click");
+      const rawHref = emailLink.getAttribute("href") || "";
+      if (!rawHref.startsWith("mailto:")) return;
+      const target = rawHref.slice("mailto:".length);
+      if (!target.startsWith("moc.")) return; // already decoded / not obfuscated
+      const actualEmail = target.split("").reverse().join("");
+      emailLink.setAttribute("href", `mailto:${actualEmail}`);
+    });
+  }
+
+  const signupLink = document.querySelector("#schedule .cta-container a.btn");
+  if (signupLink) {
+    signupLink.addEventListener("click", () => {
+      window.trackEvent?.("signup_sheet_click");
+    });
+  }
+
+  document.querySelectorAll(".updates-accordion").forEach((accordion) => {
+    accordion.addEventListener("toggle", () => {
+      if (accordion.open) {
+        const titleEl = accordion.querySelector(".accordion-title");
+        window.trackEvent?.("updates_accordion_open", {
+          month: titleEl ? titleEl.textContent.trim() : "unknown",
+        });
+      }
+    });
   });
 });
