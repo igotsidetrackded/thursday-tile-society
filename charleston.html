@@ -88,26 +88,36 @@
       <section class="opponent-grid" aria-label="Table Opponents">
         <div id="box-left" class="opponent-card">
           <div class="opponent-header">
-            <span class="opponent-name">Opponent Left (Bot)</span>
+            <span id="name-left" class="opponent-name">Opponent Left (Bot)</span>
             <span id="badge-left" class="status-badge badge-idle">Idle</span>
           </div>
-          <p class="opponent-desc">Passes to you on 1st Right &amp; 2nd Right</p>
+          <p class="opponent-desc">
+            Left Seat • Receives your 1st Left &amp; 2nd Left
+          </p>
         </div>
 
         <div id="box-across" class="opponent-card">
           <div class="opponent-header">
-            <span class="opponent-name">Opponent Across (Bot)</span>
+            <span id="name-across" class="opponent-name"
+              >Opponent Across (Bot)</span
+            >
             <span id="badge-across" class="status-badge badge-idle">Idle</span>
           </div>
-          <p class="opponent-desc">Passes to you on Across &amp; Courtesy</p>
+          <p class="opponent-desc">
+            Across Seat • Receives your Across &amp; Courtesy pass
+          </p>
         </div>
 
         <div id="box-right" class="opponent-card">
           <div class="opponent-header">
-            <span class="opponent-name">Opponent Right (Bot)</span>
+            <span id="name-right" class="opponent-name"
+              >Opponent Right (Bot)</span
+            >
             <span id="badge-right" class="status-badge badge-idle">Idle</span>
           </div>
-          <p class="opponent-desc">Receives your 1st Right &amp; 2nd Right</p>
+          <p class="opponent-desc">
+            Right Seat • Receives your 1st Right &amp; 2nd Right
+          </p>
         </div>
       </section>
 
@@ -399,7 +409,46 @@
         return fisherYatesShuffle(deck);
       }
 
+      const BOT_NAMES = [
+        "Archie",
+        "Arthur",
+        "Barnaby",
+        "Bea",
+        "Bob",
+        "Chester",
+        "Clara",
+        "Dotty",
+        "Evelyn",
+        "Frankie",
+        "Gus",
+        "Hazel",
+        "Iris",
+        "June",
+        "Lou",
+        "Mabel",
+        "Mae",
+        "Milton",
+        "Nora",
+        "Oscar",
+        "Otis",
+        "Pearl",
+        "Ruth",
+        "Sylvie",
+        "Theo",
+        "Walter",
+      ];
+
+      function assignOpponentNames() {
+        const [leftName, acrossName, rightName] = fisherYatesShuffle(BOT_NAMES);
+        document.getElementById("name-left").textContent = `${leftName} (Bot)`;
+        document.getElementById("name-across").textContent =
+          `${acrossName} (Bot)`;
+        document.getElementById("name-right").textContent =
+          `${rightName} (Bot)`;
+      }
+
       function initGame(isReset = false) {
+        assignOpponentNames();
         drawPile = createFullDeck();
         playerRack = drawPile.splice(0, 13);
         selectedIndices = [];
