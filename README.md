@@ -39,7 +39,7 @@ The official website for the **Thursday Tile Society**—a casual, recreational 
 ├── schedule.json               # Auto-generated schedule data synced from Google Sheets
 ├── server.js                   # Express server for local/container preview on port 3000
 ├── package.json                # Node dependencies and dev/start scripts
-├── favicon.png                 # Site favicon used in browser tabs and navigation bar
+├── favicon.png                 # Three-tile site favicon used in browser tabs
 ├── og-image.jpg                # Open Graph preview image for social media and messaging links
 ├── .nojekyll                   # Disables Jekyll processing on GitHub Pages
 ├── _config.yml                 # Fallback Jekyll exclusions
