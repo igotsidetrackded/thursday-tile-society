@@ -60,7 +60,7 @@ textarea,
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   color: white;
-  padding: 1rem 2rem;
+  padding: 0.65rem 2rem;
   border-bottom: 3px solid #d69e2e; /* Warm gold accent */
   box-shadow: 0 4px 12px rgba(45, 27, 84, 0.18);
 }
@@ -94,6 +94,18 @@ textarea,
   object-fit: cover;
   border-radius: 6px;
   vertical-align: middle;
+}
+
+.nav-logo-img {
+  display: block;
+  width: min(204px, 60vw);
+  aspect-ratio: 3.8 / 1;
+  object-fit: cover;
+  object-position: center 50%;
+  border-radius: 10px;
+  border: 2px solid #d69e2e;
+  background-color: #faf8f5;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.16);
 }
 
 /* Hero Section */
