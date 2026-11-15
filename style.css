@@ -4,6 +4,14 @@
   padding: 0;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
+section[id] {
+  scroll-margin-top: 5.5rem;
+}
+
 /* Base Body Styling & Typography */
 body {
   background-color: #faf8f5; /* Warm, soft cream background */
@@ -42,13 +50,19 @@ textarea,
 
 /* Navigation Bar */
 .navbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #503090;
+  background-color: rgba(80, 48, 144, 0.96);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   color: white;
   padding: 1rem 2rem;
   border-bottom: 3px solid #d69e2e; /* Warm gold accent */
+  box-shadow: 0 4px 12px rgba(45, 27, 84, 0.18);
 }
 
 .navbar .logo {
@@ -87,25 +101,25 @@ textarea,
   background: linear-gradient(135deg, #c8b6e2, #503090);
   color: white;
   text-align: center;
-  padding: 2rem 1rem;
+  padding: 1.15rem 1rem;
 }
 
 .hero h1 {
-  font-size: 2.2rem;
-  margin-bottom: 0.5rem;
+  font-size: 1.9rem;
+  margin-bottom: 0.25rem;
   letter-spacing: -0.5px;
 }
 
 .hero p {
   color: #e2e8f0;
-  font-size: 1.1rem;
-  margin-bottom: 1rem;
+  font-size: 1rem;
+  margin-bottom: 0;
 }
 
 /* Main Container & General Cards */
 .container {
   max-width: 800px;
-  margin: 2rem auto;
+  margin: 1.5rem auto;
   padding: 0 1rem;
 }
 
@@ -314,13 +328,30 @@ footer {
 }
 
 .accordion-header {
+  list-style: none;
   padding: 1rem 1.25rem;
   cursor: pointer;
   user-select: none;
   background-color: #f8fafc;
   display: flex;
+  justify-content: space-between;
   align-items: center;
   transition: background-color 0.15s ease;
+}
+
+.accordion-header::-webkit-details-marker {
+  display: none;
+}
+
+.accordion-header::after {
+  content: "▸";
+  font-size: 1rem;
+  color: #503090;
+  transition: transform 0.2s ease;
+}
+
+.month-accordion[open] .accordion-header::after {
+  transform: rotate(90deg);
 }
 
 .accordion-header:hover {
@@ -451,18 +482,15 @@ footer {
   overflow: hidden;
 }
 
+.updates-accordion:last-child {
+  margin-bottom: 0;
+}
+
 /* Fix browser default summary markers and alignment */
 .updates-accordion summary.accordion-header {
-  list-style: none;
-  cursor: pointer;
   padding: 0.85rem 1rem;
   font-weight: 600;
   background-color: var(--header-bg, #f9fafb);
-  user-select: none;
-}
-
-.updates-accordion summary.accordion-header::-webkit-details-marker {
-  display: none;
 }
 
 /* Inner content area padding adjustment */
@@ -511,6 +539,10 @@ footer {
 }
 
 @media (max-width: 640px) {
+  section[id] {
+    scroll-margin-top: 7.5rem;
+  }
+
   .navbar {
     flex-direction: column;
     align-items: flex-start;

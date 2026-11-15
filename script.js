@@ -1,4 +1,35 @@
 document.addEventListener("DOMContentLoaded", async () => {
+  const now = new Date();
+  const currentMonthLabel = now.toLocaleString("en-US", { month: "long" });
+  const currentMonthLower = currentMonthLabel.toLowerCase();
+  const currentYearFull = String(now.getFullYear());
+  const currentYearShort = currentYearFull.slice(-2);
+  const currentYearMonth = `${currentYearFull}-${String(now.getMonth() + 1).padStart(2, "0")}`;
+
+  document.querySelectorAll(".updates-accordion").forEach((accordion) => {
+    const titleEl = accordion.querySelector(".accordion-title");
+    const titleText = (titleEl ? titleEl.textContent : "").trim();
+    const normalizedTitle = titleText.toLowerCase();
+    const dataMonth = (accordion.getAttribute("data-month") || "").trim();
+
+    const matchesCurrentMonth =
+      (dataMonth && dataMonth === currentYearMonth) ||
+      (normalizedTitle.includes(currentMonthLower) &&
+        (normalizedTitle.includes(currentYearFull) ||
+          normalizedTitle.includes(`'${currentYearShort}`)));
+
+    // Only expand the current month by default; collapse all other months
+    accordion.open = Boolean(matchesCurrentMonth);
+
+    accordion.addEventListener("toggle", () => {
+      if (accordion.open) {
+        window.trackEvent?.("updates_accordion_open", {
+          month: titleText || "unknown",
+        });
+      }
+    });
+  });
+
   const container = document.getElementById("schedule-display");
   if (!container) return;
 
@@ -20,13 +51,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     const cleanTabName = (name) =>
       (name || "").replace(/^[\s\-–—]+|[\s\-–—]+$/g, "").trim();
 
-    // Identify current month and start of current month (for filtering past months)
-    const now = new Date();
+    // Identify start of current month (for filtering past months)
     const currentMonthStart = new Date(now.getFullYear(), now.getMonth(), 1);
-
-    const currentMonthName = now.toLocaleString("en-US", { month: "long" });
-    const currentYearShort = now.getFullYear().toString().slice(-2);
-    const currentMonthTabStr = `${currentMonthName} '${currentYearShort}`;
+    const currentMonthTabStr = `${currentMonthLabel} '${currentYearShort}`;
 
     // Helper to parse tab strings like "September '26" safely across all browsers
     const parseTabDate = (displayName) => {
@@ -204,15 +231,4 @@ document.addEventListener("DOMContentLoaded", async () => {
       window.trackEvent?.("signup_sheet_click");
     });
   }
-
-  document.querySelectorAll(".updates-accordion").forEach((accordion) => {
-    accordion.addEventListener("toggle", () => {
-      if (accordion.open) {
-        const titleEl = accordion.querySelector(".accordion-title");
-        window.trackEvent?.("updates_accordion_open", {
-          month: titleEl ? titleEl.textContent.trim() : "unknown",
-        });
-      }
-    });
-  });
 });
