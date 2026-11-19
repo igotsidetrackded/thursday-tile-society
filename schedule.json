@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-11-19T12:44:09.296Z",
+  "lastUpdated": "2026-11-19T17:44:42.949Z",
   "tabs": [
     {
       "tabName": "September '26",
@@ -86,6 +86,31 @@
         },
         {
           "date": "Thursday - Dec 17 2026",
+          "status": "NEEDS HOST",
+          "host": ""
+        }
+      ]
+    },
+    {
+      "tabName": "January '27",
+      "games": [
+        {
+          "date": "Thursday - Jan 07 2027",
+          "status": "NEEDS HOST",
+          "host": ""
+        },
+        {
+          "date": "Thursday - Jan 14 2027",
+          "status": "NEEDS HOST",
+          "host": ""
+        },
+        {
+          "date": "Thursday - Jan 21 2027",
+          "status": "NEEDS HOST",
+          "host": ""
+        },
+        {
+          "date": "Thursday - Jan 28 2027",
           "status": "NEEDS HOST",
           "host": ""
         }
