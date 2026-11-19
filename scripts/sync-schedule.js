@@ -7,6 +7,7 @@ const TAB_NAMES = [
   "October '26",
   "November '26",
   "December '26",
+  "January '27",
 ];
 
 async function syncSchedule() {
