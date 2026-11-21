@@ -41,6 +41,8 @@ The official website for the **Thursday Tile Society**—a casual, recreational 
 ├── package.json                # Node dependencies and dev/start scripts
 ├── favicon.png                 # Three-tile site favicon used in browser tabs
 ├── og-image.jpg                # Open Graph preview image for social media and messaging links
+├── robots.txt                  # Crawler directives and sitemap reference for search engines
+├── sitemap.xml                 # XML sitemap submitted to Google Search Console
 ├── .nojekyll                   # Disables Jekyll processing on GitHub Pages
 ├── _config.yml                 # Fallback Jekyll exclusions
 └── CNAME                       # GitHub Pages custom domain configuration
